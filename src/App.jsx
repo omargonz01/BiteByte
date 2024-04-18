@@ -1,31 +1,33 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Nav from './components/Nav/nav'
+import Welcome from './views/Welcome'
+import CaloriesLeft from './views/Home'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a>
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a>
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>BiteByte</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Awesome x {count}
-        </button>
-        
-      </div>
-    
-    </>
-  )
+    <div className="app">
+      <h1 className="text-[#5A6D57] font-bold text-2xl ">bitebyte</h1>
+      {/* <header className="header">
+        <h2>bitebyte</h2>
+        <h2>-     TODAY, APR 17     -</h2>
+      </header>
+
+      <main className="main-content">
+        <h1 >Calories Left ...</h1>
+        <h3>Micro Breakdown</h3>
+        <p text-3xl font-bold underline>Carbs - Protein - Fat</p>
+      </main> */}
+
+      
+      <Welcome />
+      <CaloriesLeft calories={2000} />
+      <Nav />
+
+    </div>
+  );
 }
 
-export default App
+export default App;
