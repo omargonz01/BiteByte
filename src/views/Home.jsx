@@ -14,7 +14,7 @@ const CaloriesLeft = ({ calories, totalCalories }) => {
       strokeDashoffset: 100 - percentage,
       transition: { duration: 1 },
     },
-  };
+};
 
   const eatenCircleVariants = {
     initial: {
@@ -25,7 +25,7 @@ const CaloriesLeft = ({ calories, totalCalories }) => {
       strokeDashoffset: 100 - eatenPercentage,
       transition: { duration: 1 },
     },
-  };
+};
 
   return (
     <div className="flex items-center justify-center h-screen bg-[#F3F4F6]">
