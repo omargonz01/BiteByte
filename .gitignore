@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 .env
+.gitignore
+
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +25,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# random folders
+images
+uploads

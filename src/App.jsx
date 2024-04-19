@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import Nav from './components/Nav/nav'
+import Nav from './components/Nav/Nav'
 import Welcome from './views/Welcome'
 import CaloriesLeft from './views/Home'
 import './App.css'
+import './views/HomeScreen'
+import HomeScreen from './views/HomeScreen'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -24,6 +26,7 @@ function App() {
       
       <Welcome />
       <CaloriesLeft calories={2000} />
+      <HomeScreen />
       <Nav />
 
     </div>
