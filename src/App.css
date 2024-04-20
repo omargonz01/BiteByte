@@ -1,38 +1,104 @@
+/* Base styles */
+body, #root {
+  font-family: 'Work Sans', sans-serif;
+  margin: 0;
+  padding: 0; /* No padding to interfere with full-width elements */
+  min-height: 100vh;
+  background-color: #E7EFED;
+  color: #5A6D57;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-#root {
+/* General app styling */
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
+  width: 100%;
   max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
+  margin: auto;
+  min-height: 100vh;
 }
 
-
-.header {
-  font-size: 48px; 
+/* Fade-out animation */
+.fade-out {
+  animation: fadeOut 1s ease-out forwards;
 }
 
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Header styles */
 .header h1 {
-  font-size: 32px; 
-  font-weight: 400; 
+  font-size: 2rem;
 }
 
-.main-content h2 {
-  font-size: 32px; 
-  font-weight: 400; 
+/* Responsive main content */
+.main-content {
+  flex-grow: 1; /* Allow the main content to grow and fill available space */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center children horizontally */
+  width: 100%; /* Take the full width */
+  padding: 1rem;
 }
 
-.main-content h3 {
-  font-size: 24px; 
-  font-weight: 400; 
+/* Adjust heading sizes in main content for responsive design */
+.main-content h2, .main-content h3 {
+  font-size: 1.5rem;
 }
 
+/* Macro breakdown specific styles */
+.macro-breakdown {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
 
+/* Each macro item takes at least a third of the width */
+.macro-item {
+  flex: 1 1 calc(33.333% - 1rem); /* Subtracting padding/margin from the width */
+  padding: 0.5rem;
+  box-sizing: border-box;
+  text-align: center; /* Center text in macro items */
+}
 
+/* Button styles */
 button {
-  font-size: 16px; 
-  font-weight: 400;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
 }
 
-.footer span {
-  font-size: 14px; 
-  font-weight: 400; 
+/* Footer or Nav styles */
+.nav, .footer {
+  width: 100%; /* Ensure the nav/footer takes the full width */
+  background-color: #ffffff; /* Assuming nav/footer has a white background */
+}
+
+/* If the footer should be stuck at the bottom */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  font-size: 0.875rem;
+  padding: 1rem;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .main-content h2, .main-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .macro-item {
+    flex-basis: 100%; /* Stack vertically on smaller screens */
+  }
 }

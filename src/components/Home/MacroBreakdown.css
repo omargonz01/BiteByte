@@ -1,0 +1,79 @@
+.macro-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif; /* Change to the font you're using */
+    overflow: hidden;
+    margin: 16px;
+  }
+  
+  .progress-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    position: relative;
+  }
+  
+  .progress-text {
+    font-size: 48px;
+    font-weight: bold;
+    color: #10B981; /* Tailwind Green-500 */
+  }
+  
+  .progress-label {
+    font-size: 14px;
+    color: #6B7280; /* Tailwind Gray-500 */
+  }
+  
+  .macro-nutrients {
+    padding: 16px;
+    background: #F9FAFB; /* Tailwind Gray-50 */
+    border-top: 1px solid #E5E7EB; /* Tailwind Gray-300 */
+  }
+  
+  .macro-nutrient {
+    text-align: center;
+    padding: 8px 0;
+  }
+  
+  .nutrient-label {
+    display: block;
+    color: #6B7280; /* Tailwind Gray-500 */
+    font-size: 14px;
+  }
+  
+  .nutrient-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1F2937; /* Tailwind Gray-800 */
+  }
+  
+  .guide-tag {
+    font-size: 16px;
+    text-align: center;
+    padding: 8px;
+    color: #4B5563; /* Tailwind Gray-600 */
+  }
+  
+  .coming-soon {
+    background-color: #D1FAE5; /* Tailwind Green-100 */
+    color: #10B981; /* Tailwind Green-500 */
+    border-radius: 20px;
+    padding: 4px 12px;
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 12px;
+  }
+  
+  .macro-nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: #10B981; /* Tailwind Green-500 */
+    padding: 16px;
+    font-size: 14px;
+    color: white;
+  }
+  
+  /* Add custom styles for the navigation items here */
+  
