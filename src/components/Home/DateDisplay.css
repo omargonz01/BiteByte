@@ -1,0 +1,26 @@
+.date-display-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem; /* Adjust the font size as needed */
+    color: #4B5563; /* Adjust the color to match your design */
+    margin: 16px 0; /* Adjust the margin to fit your layout */
+  }
+  
+  .date-change-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .date-arrow-icon {
+    width: 24px; /* Adjust as needed */
+    height: 24px; /* Adjust as needed */
+    fill: currentColor; /* Icon color will be inherited from the button */
+  }
+  
+  .date-text {
+    margin: 0 12px; /* Space between the arrows and the date */
+    /* Additional styling to match your design */
+  }
+  

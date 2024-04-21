@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import Nav from './components/Nav/Nav';
 import Welcome from './views/Welcome';
 import Header from './components/Home/Header';
-import NutritionGuide from './components/Home/NutritionGuide';
 import MacroBreakdown from './components/Home/MacroBreakdown';
+import DateDisplay from './components/Home/DateDisplay';
 import './App.css';
 
 function App() {
@@ -21,9 +21,10 @@ function App() {
   return (
     <div className="app">
       <Header />
+      <DateDisplay />
       <main className="main-content">
-        <MacroBreakdown initialCalories={0} carbs={215} protein={86} fat={57} />
-        <NutritionGuide imageUrl="/path-to-image.jpg" comingSoon={true} />
+        <MacroBreakdown />
+        
       </main>
       <Nav />
     </div>

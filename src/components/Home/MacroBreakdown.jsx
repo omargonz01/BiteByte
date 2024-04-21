@@ -3,80 +3,54 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import './MacroBreakdown.css';
 
-const MacroBreakdown = ({ initialCalories, carbs, protein, fat }) => {
-  const [caloriesEaten, setCaloriesEaten] = useState(initialCalories);
+const MacroBreakdown = () => {
+  const [macros, setMacros] = useState({
+    carbs: 215,
+    protein: 86,
+    fat: 57
+  });
 
-  // Mock function to simulate adding calories
-  // Replace this with the actual function that receives calorie data from the scanned food
-  const addCalories = (newCalories) => {
-    setCaloriesEaten(caloriesEaten + newCalories);
-  };
-
+  const totalCalories = 0;
 
   return (
-     <div className="macro-container">
+    <div className="macro-container">
       <div className="progress-bar">
         <CircularProgressbar
-          value={caloriesEaten}
-          text={`${caloriesEaten} CALS`}
+          value={totalCalories}
+          text={`${totalCalories}`}
           styles={buildStyles({
-            textColor: 'gray',
-            pathColor: 'green',
+            textSize: '16px',
+            pathColor: `rgba(62, 152, 199, ${totalCalories / 100})`,
+            textColor: '#4b5563',
+            trailColor: '#d6d6d6',
           })}
         />
         <div className="progress-label">CALS EATEN</div>
       </div>
       <div className="macro-nutrients">
         <div className="macro-nutrient">
-          <span className="nutrient-label">Carbs</span>
-          <div className="nutrient-value">{carbs}g</div>
+          <span className="nutrient-value">Carbs</span>
+          <span className="nutrient-label">/ {macros.carbs}g</span>
         </div>
+        {/* Inserting divider lines based on the Figma design */}
+        <div className="divider"></div>
         <div className="macro-nutrient">
-          <span className="nutrient-label">Protein</span>
-          <div className="nutrient-value">{protein}g</div>
+          <span className="nutrient-value">Protein</span>
+          <span className="nutrient-label">/ {macros.protein}g</span>
         </div>
+        <div className="divider"></div>
         <div className="macro-nutrient">
-          <span className="nutrient-label">Fat</span>
-          <div className="nutrient-value">{fat}g</div>
+          <span className="nutrient-value">Fat</span>
+          <span className="nutrient-label">/ {macros.fat}g</span>
         </div>
+      </div>
+      {/* Add the 'Coming Soon' section here */}
+      <div className="guide-tag">
+        <span className="coming-soon">Coming Soon</span>
+        <span>Guide</span>
       </div>
     </div>
   );
 };
 
 export default MacroBreakdown;
-
-
-// import React from 'react';
-// import './MacroBreakdown.css'; // Ensure this is the correct path to your CSS file
-
-// const MacroBreakdown = ({ carbs, protein, fat }) => {
-//   return (
-//     <div className="macro-container">
-//       <div className="progress-bar">
-//         <div className="progress-text">2000</div>
-//         <div className="progress-label">0 EATEN</div>
-//       </div>
-//       <div className="macro-nutrients">
-//         <div className="macro-nutrient">
-//           <span className="nutrient-label">Carbs</span>
-//           <div className="nutrient-value">{carbs}g</div>
-//         </div>
-//         <div className="macro-nutrient">
-//           <span className="nutrient-label">Protein</span>
-//           <div className="nutrient-value">{protein}g</div>
-//         </div>
-//         <div className="macro-nutrient">
-//           <span className="nutrient-label">Fat</span>
-//           <div className="nutrient-value">{fat}g</div>
-//         </div>
-//       </div>
-//       <div className="guide-tag">Guide <span className="coming-soon">Coming Soon</span></div>
-//       <nav className="macro-nav">
-//         {/* Navigation items here */}
-//       </nav>
-//     </div>
-//   );
-// };
-
-// export default MacroBreakdown;
