@@ -25,8 +25,8 @@ function App() {
 
       
       <Welcome />
-      <CaloriesLeft calories={2000} />
       <HomeScreen />
+      <CaloriesLeft calories={2000} />
       <Nav />
 
     </div>
