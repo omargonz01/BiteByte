@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import axios from 'axios';
-import { extractKeyNutrients as parseExtractKeyNutrients } from './parseNutritionalData.js';
+import { extractKeyNutrients as parseExtractKeyNutrients } from '../service/parseNutritionalData.js';
 
 // Edamam API Endpoints
 const NUTRITION_API_ENDPOINT = 'https://api.edamam.com/api/nutrition-data';

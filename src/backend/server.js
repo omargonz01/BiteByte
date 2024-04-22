@@ -4,8 +4,8 @@ import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
 import { admin } from './firebaseAdminSetup.js';
-import { analyzeImage } from './GeminiAPI.js';
-import { getNutritionalInfoForIngredient } from './EdamamAPI.js';
+import { analyzeImage } from './api/GeminiAPI.js';
+import { getNutritionalInfoForIngredient } from './api/EdamamAPI.js';
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
