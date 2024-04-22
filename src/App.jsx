@@ -1,34 +1,32 @@
-import { useState } from 'react'
-import Nav from './components/Nav/Nav'
-import Welcome from './views/Welcome'
-import CaloriesLeft from './views/Home'
-import './App.css'
-import './views/HomeScreen'
-import HomeScreen from './views/HomeScreen'
+import { useState, useEffect } from 'react';
+import Nav from './components/Nav/Nav';
+import Welcome from './views/Welcome';
+import Header from './components/Home/Header';
+import MacroBreakdown from './components/Home/MacroBreakdown';
+import DateDisplay from './components/Home/DateDisplay';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowWelcome(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showWelcome) {
+    return <Welcome />;
+  }
 
   return (
     <div className="app">
-      <h1 className="text-[#5A6D57] font-bold text-2xl ">bitebyte</h1>
-      {/* <header className="header">
-        <h2>bitebyte</h2>
-        <h2>-     TODAY, APR 17     -</h2>
-      </header>
-
+      <Header />
+      <DateDisplay />
       <main className="main-content">
-        <h1 >Calories Left ...</h1>
-        <h3>Micro Breakdown</h3>
-        <p text-3xl font-bold underline>Carbs - Protein - Fat</p>
-      </main> */}
-
-      
-      <Welcome />
-      <HomeScreen />
-      <CaloriesLeft calories={2000} />
+        <MacroBreakdown />
+        
+      </main>
       <Nav />
-
     </div>
   );
 }
