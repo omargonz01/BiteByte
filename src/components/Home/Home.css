@@ -1,0 +1,116 @@
+/* General Reset and Variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --primary-color: #yourColor; /* Replace with the actual color from Figma */
+    --secondary-color: #yourColor;
+    --text-color: #yourColor;
+  }
+  
+  /* App Header */
+  .app-header {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  
+  /* Main Content Styles */
+  .main-content {
+    background-color: #f4f4f4;
+    padding: 1rem;
+    font-family: 'Your Font', sans-serif; /* Replace with your actual font family */
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  /* Circle Progress Bar */
+  .circle-progress {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 5px solid var(--secondary-color);
+    margin: 2rem auto;
+    position: relative;
+  }
+  
+  .circle-progress span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: var(--text-color);
+  }
+  
+  /* Macro Breakdown */
+  .macro-breakdown {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  
+  .macro {
+    text-align: center;
+  }
+  
+  /* Nutrition Guide Card */
+  .nutrition-guide {
+    position: relative;
+    margin: 1rem 0;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .nutrition-guide img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .nutrition-guide .coming-soon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }
+  
+  /* Bottom Navigation */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+  }
+  
+  .bottom-nav a {
+    color: var(--text-color);
+    text-decoration: none;
+  }
+  
+  /* Responsive Media Queries */
+  @media (max-width: 768px) {
+    /* Adjust styles for mobile */
+  }
+  
+  /* Additional styles and responsiveness can be added as needed */
+  
