@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { parseNutritionalData, cleanJsonText, isValidJson } from './parseNutritionalData.js';
+import { parseNutritionalData, cleanJsonText, isValidJson } from '../service/parseNutritionalData.js';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
