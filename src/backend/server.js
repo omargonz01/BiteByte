@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
+import cors from 'cors';
 import multer from 'multer';
 import fs from 'fs';
 import { admin } from './firebaseAdminSetup.js';
@@ -12,6 +13,11 @@ import { averageNutrition, sumNutrition, combineNutritionData } from './service/
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 const PORT = process.env.PORT || 5000;
+
+// Enable CORS for client-side app on a different port or domain
+app.use(cors({
+  origin: 'http://localhost:5173', // Allow the client-side app to communicate with the server
+}));
 
 app.use(express.json());
 
