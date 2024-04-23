@@ -1,11 +1,12 @@
 import React from 'react';
+import smallLogo from '../assets/smallLogo.png';
 
 const HomeScreen = () => {
   return (
     <div className="bg-white max-w-xs mx-auto overflow-hidden">
       <header className="flex justify-between items-center p-4 border-b">
         <div className="text-sm">9:41</div>
-        <div className="text-lg font-bold">bitebyte</div>
+        <img src={smallLogo} />
         <div className="text-sm">TODAY, APR 17</div>
       </header>
 

@@ -27,5 +27,5 @@ serviceAccountKey.json
 *.sw?
 
 # random folders
-images
+
 uploads
