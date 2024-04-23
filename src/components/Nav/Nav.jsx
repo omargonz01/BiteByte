@@ -5,11 +5,13 @@ import { Modal } from '@mui/material';
 import { FaHome, FaChartLine, FaBook, FaUser } from 'react-icons/fa';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddFoodNav from './AddFoodNav';
+import Camera from '../Forms/CameraAcess';
 
 function Nav() {
   const [showAddFoodNav, setShowAddFoodNav] = useState(false);
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
-  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null); 
 
   //  handle the "plus" button click
   const handlePlusClick = () => {
@@ -19,6 +21,29 @@ function Nav() {
   //  handle closing the AddFoodNav
   const handleCloseAddFoodNav = () => {
     setShowAddFoodNav(false);
+  };
+
+  const handleImageCapture = async (imageBlob) => {
+    console.log('Captured image blob:', imageBlob);
+    // Convert the blob to a file object (if needed)
+    const imageFile = new File([imageBlob], "capturedImage.jpg", { type: 'image/jpeg' });
+    
+    try {
+      // Upload the image and wait for the nutrition data
+      const nutritionData = await uploadImageAndGetNutrition(imageFile);
+      console.log(nutritionData); // Handle the received nutrition data
+      // You might want to set this data to state, or pass to another component
+    } catch (error) {
+      // Handle any errors from the API call here
+      console.error('Error fetching nutrition data:', error);
+    }
+  };
+
+
+  const handleImageClear = () => {
+    setCapturedImage(null); // Clear the captured image
+    setShowCamera(false); // Hide the camera component
+    // Clear any other related states or UI elements if necessary
   };
 
   const handleSelectAction = (action) => {
@@ -31,8 +56,8 @@ function Nav() {
         setShowAddFoodNav(false); // Optionally close the AddFoodNav
         break;
       case 'camera':
-        // Placeholder for camera action
-        console.log('Camera action selected');
+        // Set state to show Camera component
+        setShowCamera(true);
         setShowAddFoodNav(false);
         break;
       case 'barcode':
@@ -82,7 +107,10 @@ function Nav() {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>
       )}
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
-
+      {showCamera && <Camera onCapture={handleImageCapture} onClear={handleImageClear} />}
+      {capturedImage && (
+        <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
+      )}
       {/* MUI Modal for image upload */}
       <Modal
         open={showImageUploadModal}
