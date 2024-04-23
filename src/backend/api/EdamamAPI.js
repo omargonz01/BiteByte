@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import axios from 'axios';
-import { extractKeyNutrients as parseExtractKeyNutrients } from '../service/parseNutritionalData.js';
+import { formatNutritionValues } from '../service/parseNutritionalData.js';
 
 // Edamam API Endpoints
 const NUTRITION_API_ENDPOINT = 'https://api.edamam.com/api/nutrition-data';
@@ -66,19 +66,17 @@ function formatIngredientsForEdamam(ingredients) {
  * @returns {Promise<Object>} Nutritional information for the ingredient.
  */
 async function getNutritionalInfoForIngredient(ingredient) {
-  const app_id = process.env.EDAMAM_NUTRITION_APP_ID;
-  const app_key = process.env.EDAMAM_NUTRITION_APP_KEY;
   const ingredientString = `${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`;
 
   try {
     const response = await axios.get(NUTRITION_API_ENDPOINT, {
       params: {
-        app_id,
-        app_key,
+        app_id: process.env.EDAMAM_NUTRITION_APP_ID,
+        app_key: process.env.EDAMAM_NUTRITION_APP_KEY,
         ingr: ingredientString
       }
     });
-    return extractKeyNutrients(response.data);
+    return formatNutritionValues(extractKeyNutrients(response.data));
   } catch (error) {
     console.error('Error getting nutritional info for ingredient:', ingredient.name, error);
     throw error;
@@ -91,13 +89,13 @@ async function getNutritionalInfoForIngredient(ingredient) {
  * @returns {Object} Key nutritional values.
  */
 function extractKeyNutrients(data) {
-  const { calories, totalNutrients } = data;
-  return {
-    calories,
-    fat: totalNutrients.FAT?.quantity || 0,
-    carbohydrates: totalNutrients.CHOCDF?.quantity || 0,
-    protein: totalNutrients.PROCNT?.quantity || 0
+  let nutrients = {
+    calories: data.calories,
+    fat: data.totalNutrients.FAT?.quantity || 0,
+    carbohydrates: data.totalNutrients.CHOCDF?.quantity || 0,
+    protein: data.totalNutrients.PROCNT?.quantity || 0
   };
+  return formatNutritionValues(nutrients);
 }
 
 export { getFoodDatabaseInfo, searchRecipes, getNutritionalInfoForIngredient };

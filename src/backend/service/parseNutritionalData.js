@@ -14,28 +14,30 @@ function parseNutritionalData(jsonData) {
             }
         })),
         totals: {
-            totalCalories: jsonData.totalNutrition.calories,
-            totalFat: jsonData.totalNutrition.fat,
-            totalCarbohydrates: jsonData.totalNutrition.carbohydrates,
-            totalProtein: jsonData.totalNutrition.protein
+          totalCalories: jsonData.totalNutrition.calories,
+          totalFat: jsonData.totalNutrition.fat,
+          totalCarbohydrates: jsonData.totalNutrition.carbohydrates,
+          totalProtein: jsonData.totalNutrition.protein
         }
     };
 
+    // Format all numerical values in totals using the formatNutritionValues function
+    structuredData.totals = formatNutritionValues(structuredData.totals);
     return structuredData;
 }
 
 function extractKeyNutrients(edamamData) {
-    // Extract only the required nutrients from the Edamam response
-    const requiredNutrients = {
-      calories: edamamData.totalNutrientsKCal.ENERC_KCAL.quantity || 0 ,
-      fat: edamamData.totalNutrients.FAT.quantity || 0,
-      carbohydrates: edamamData.totalNutrients.CHOCDF.quantity || 0,
-      protein: edamamData.totalNutrients.PROCNT.quantity || 0
-    };
-  
-    // Return the extracted nutrients
-    return requiredNutrients;
-  }
+  // Extract only the required nutrients from the Edamam response
+  let requiredNutrients = {
+    calories: edamamData.totalNutrientsKCal.ENERC_KCAL.quantity || 0,
+    fat: edamamData.totalNutrients.FAT.quantity || 0,
+    carbohydrates: edamamData.totalNutrients.CHOCDF.quantity || 0,
+    protein: edamamData.totalNutrients.PROCNT.quantity || 0
+  };
+
+  // Format all numerical values using the formatNutritionValues function
+  return formatNutritionValues(requiredNutrients);
+}
 
 function cleanJsonText(rawText) {
     // Removes Markdown code block syntax and trims any unwanted whitespace
@@ -69,5 +71,23 @@ function isValidJson(jsonString) {
     }
   }
 
+function formatNutritionValues(nutritionData) {
+    // Create a new object to prevent mutation of the original data
+    let formattedData = {};
   
-  export { parseNutritionalData, extractKeyNutrients, cleanJsonText, isValidJson };
+    // Iterate over each key in the nutritionData object
+    for (let key in nutritionData) {
+      if (typeof nutritionData[key] === 'number') {
+        // Format the numeric values to two decimal places
+        formattedData[key] = parseFloat(nutritionData[key].toFixed(2));
+      } else {
+        // Copy non-numeric values as they are
+        formattedData[key] = nutritionData[key];
+      }
+    }
+  
+    return formattedData;
+  }
+  
+  
+  export { parseNutritionalData, extractKeyNutrients, cleanJsonText, isValidJson, formatNutritionValues };
