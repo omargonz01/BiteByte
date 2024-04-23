@@ -1,39 +1,15 @@
 import React, { useState } from 'react';
 import './Nav.css';
+import { ImageUpload } from '../Forms';
+import { Modal } from '@mui/material';
 import { FaHome, FaChartLine, FaBook, FaUser } from 'react-icons/fa';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
-
-//  component  appears when the "plus" button is clicked
-const AddFoodNav = ({ onClose, onSelect }) => {
-  // Function to handle selection of each action
-  const handleSelect = (action) => {
-    onSelect(action);
-    onClose();
-  };
-
-  return (
-    <div className="fixed inset-x-0 bottom-0 flex items-center justify-around p-4 bg-white shadow-lg z-20">
-      <button onClick={() => handleSelect('search')} className="flex flex-col items-center">
-        <PhotoLibraryIcon fontSize="large" />
-        <span>Search</span> 
-      </button>
-      <button onClick={() => handleSelect('camera')} className="flex flex-col items-center">
-        <CameraAltIcon fontSize="large" />
-        <span>Camera</span> 
-      </button>
-      <button onClick={() => handleSelect('barcode')} className="flex flex-col items-center">
-        <QrCodeScannerIcon fontSize="large" />
-        <span>Barcode</span> 
-      </button>
-    </div>
-  );
-};
+import AddFoodNav from './AddFoodNav';
 
 function Nav() {
   const [showAddFoodNav, setShowAddFoodNav] = useState(false);
+  const [showImageUploadModal, setShowImageUploadModal] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   //  handle the "plus" button click
   const handlePlusClick = () => {
@@ -45,13 +21,34 @@ function Nav() {
     setShowAddFoodNav(false);
   };
 
-  //  handle selection of an action from AddFoodNav
   const handleSelectAction = (action) => {
-    console.log(`Action selected: ${action}`);
-    
+    console.log('Action received:', action); // Debug log
+
+    // Based on the action, do something
+    switch (action) {
+      case 'search':
+        setShowImageUploadModal(true); // Determines visibility state to show the modal
+        setShowAddFoodNav(false); // Optionally close the AddFoodNav
+        break;
+      case 'camera':
+        // Placeholder for camera action
+        console.log('Camera action selected');
+        setShowAddFoodNav(false);
+        break;
+      case 'barcode':
+        // Placeholder for barcode action
+        console.log('Barcode action selected');
+        setShowAddFoodNav(false);
+        break;
+      default:
+        console.log(`Unknown action: ${action}`);
+        break;
+    }
   };
 
-  
+  const handleCloseModal = () => setShowImageUploadModal(false);
+
+
   const handleNavClick = (page) => {
     console.log(`${page} clicked`);
   };
@@ -84,8 +81,22 @@ function Nav() {
       {showAddFoodNav && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>
       )}
-
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
+
+      {/* MUI Modal for image upload */}
+      <Modal
+        open={showImageUploadModal}
+        onClose={handleCloseModal}
+        aria-labelledby="image-upload-modal"
+        aria-describedby="Modal for image upload"
+      >
+        <div className="modal-content">
+          <ImageUpload onImageSelected={(file) => {
+            console.log('Image selected:', file);
+            handleCloseModal(); // Close the modal after an image is selected
+          }} />
+        </div>
+      </Modal>
     </>
   );
 }

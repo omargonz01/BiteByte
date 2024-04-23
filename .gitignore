@@ -15,6 +15,7 @@ dist-ssr
 .gitignore
 serviceAccountKey.json
 backup.js
+midpoint_demo.mov
 
 # Editor directories and files
 .vscode/*
