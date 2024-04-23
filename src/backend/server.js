@@ -66,9 +66,6 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     );
     const combinedGeminiEdamamIngredientsNutrition = combineNutritionData(averagedTotalNutrition, sumAveragedIngredientsNutrition);
 
-
-
-
     console.log("Edamam Ingredients Nutrition:", JSON.stringify(edamamIngredientsNutrition, null, 2));
 
     // const averagedIngredientsNutrition = edamamIngredientsNutrition.map(ing => averageNutrition(ing.name, ing.macronutrients, ing.nutrition));

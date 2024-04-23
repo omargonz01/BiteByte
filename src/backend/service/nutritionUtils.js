@@ -1,11 +1,17 @@
 // Function to calculate the average nutrition data from two sources
 function averageNutrition(ingredientName, nutritionA, nutritionB) {
+  const avgFat = ((nutritionA.fat || 0) + (nutritionB.fat || 0)) / 2;
+  const avgCarbohydrates = ((nutritionA.carbohydrates || 0) + (nutritionB.carbohydrates || 0)) / 2;
+  const avgProtein = ((nutritionA.protein || 0) + (nutritionB.protein || 0)) / 2;
+
+  const calculatedCalories = (4 * avgProtein) + (4 * avgCarbohydrates) + (9 * avgFat);
+
   return {
     name: ingredientName,
-    calories: ((nutritionA.calories || 0) + (nutritionB.calories || 0)) / 2,
-    fat: ((nutritionA.fat || 0) + (nutritionB.fat || 0)) / 2,
-    carbohydrates: ((nutritionA.carbohydrates || 0) + (nutritionB.carbohydrates || 0)) / 2,
-    protein: ((nutritionA.protein || 0) + (nutritionB.protein || 0)) / 2,
+    calories: calculatedCalories,
+    fat: avgFat,
+    carbohydrates: avgCarbohydrates,
+    protein: avgProtein,
   };
 }
 
@@ -24,12 +30,19 @@ function sumNutrition(ingredients) {
   }, { calories: 0, fat: 0, carbohydrates: 0, protein: 0 });
 }
 
+// Function to combine nutritional data from two sources and compute the average calories from macronutrients
 function combineNutritionData(nutritionA, nutritionB) {
+  const avgFat = (nutritionA.fat + nutritionB.fat) / 2;
+  const avgCarbohydrates = (nutritionA.carbohydrates + nutritionB.carbohydrates) / 2;
+  const avgProtein = (nutritionA.protein + nutritionB.protein) / 2;
+
+  const calculatedCalories = (4 * avgProtein) + (4 * avgCarbohydrates) + (9 * avgFat);
+
   return {
-      calories: (nutritionA.calories + nutritionB.calories) / 2,
-      fat: (nutritionA.fat + nutritionB.fat) / 2,
-      carbohydrates: (nutritionA.carbohydrates + nutritionB.carbohydrates) / 2,
-      protein: (nutritionA.protein + nutritionB.protein) / 2
+      calories: calculatedCalories,
+      fat: avgFat,
+      carbohydrates: avgCarbohydrates,
+      protein: avgProtein
   };
 }
 
