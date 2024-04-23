@@ -41,9 +41,6 @@ button {
     outline: 4px auto -webkit-focus-ring-color;
 }
   
-  
-    
-
 a {
     font-weight: 500;
     color: #737373;
@@ -63,5 +60,13 @@ a:hover {
     .nav {
       font-size: 14px; 
     }
+  }
+
+.modal-content {
+    display: flex; /* Use flexbox for positioning */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Take full viewport height */
+    outline: 0; /* Remove the focus outline */
   }
   
