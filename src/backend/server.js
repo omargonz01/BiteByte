@@ -6,7 +6,7 @@ import fs from 'fs';
 import { admin } from './firebaseAdminSetup.js';
 import { analyzeImage } from './api/GeminiAPI.js';
 import { getNutritionalInfoForIngredient } from './api/EdamamAPI.js';
-import { averageNutrition, sumNutrition } from './service/nutritionUtils.js';
+import { averageNutrition, sumNutrition, combineNutritionData } from './service/nutritionUtils.js';
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
@@ -52,6 +52,8 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     });
 
     const averagedIngredientsNutrition = edamamIngredientsNutrition.map(ing => averageNutrition(ing.name, ing.macronutrients, ing.nutrition));
+    const sumAveragedIngredientsNutrition = sumNutrition(averagedIngredientsNutrition);
+
     const averagedTotalNutrition = averageNutrition(
       "Total Nutrition",
       {
@@ -62,7 +64,8 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
       },
       edamamTotalNutrition
     );
-    const sumAveragedIngredientsNutrition = sumNutrition(averagedIngredientsNutrition);
+    const combinedGeminiEdamamIngredientsNutrition = combineNutritionData(averagedTotalNutrition, sumAveragedIngredientsNutrition);
+
 
 
 
@@ -71,14 +74,21 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     // const averagedIngredientsNutrition = edamamIngredientsNutrition.map(ing => averageNutrition(ing.name, ing.macronutrients, ing.nutrition));
     console.log("Averaged Ingredients Nutrition:", JSON.stringify(averagedIngredientsNutrition, null, 2));
 
+    // const sumAveragedIngredientsNutrition = sumNutrition(averagedIngredientsNutrition);
+    console.log("Sum Averaged Ingredients Nutrition:", JSON.stringify(sumAveragedIngredientsNutrition, null, 2));
+
+    // const edamamTotalNutrition = sumNutrition(edamamIngredientsNutrition.map(ing => ing.nutrition));
+    console.log("Gemini Total Nutrition:", JSON.stringify(structuredData.totals, null, 2));
+
     // const edamamTotalNutrition = sumNutrition(edamamIngredientsNutrition.map(ing => ing.nutrition));
     console.log("Edamam Total Nutrition:", JSON.stringify(edamamTotalNutrition, null, 2));
 
     // const averagedTotalNutrition = averageNutrition("Total Nutrition", structuredData.totals, edamamTotalNutrition);
-    console.log("Averaged Total Nutrition:", JSON.stringify(averagedTotalNutrition, null, 2));
+    console.log("Averaged (Gemini & Edamam) Total Nutrition:", JSON.stringify(averagedTotalNutrition, null, 2));
 
-    // const sumAveragedIngredientsNutrition = sumNutrition(averagedIngredientsNutrition);
-    console.log("Sum Averaged Ingredients Nutrition:", JSON.stringify(sumAveragedIngredientsNutrition, null, 2));
+    // const averagedTotalNutrition = averageNutrition("Total Nutrition", structuredData.totals, edamamTotalNutrition);
+    console.log("Averaged (Gemini, Edamam, & Ingredients) Total Nutrition:", JSON.stringify(combinedGeminiEdamamIngredientsNutrition, null, 2));
+
 
     // Save and respond
     const newDataKey = admin.database().ref('dishes').push().key;
@@ -90,10 +100,11 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
       data: structuredData,
       edamamIngredientsNutrition,
       averagedIngredientsNutrition,
+      sumAveragedIngredientsNutrition,
       geminiTotalNutrition: structuredData.totals,
       edamamTotalNutrition,
       averagedTotalNutrition,
-      sumAveragedIngredientsNutrition
+      combinedGeminiEdamamIngredientsNutrition
     });
 
   } catch (error) {

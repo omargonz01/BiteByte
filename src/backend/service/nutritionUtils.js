@@ -24,8 +24,17 @@ function sumNutrition(ingredients) {
   }, { calories: 0, fat: 0, carbohydrates: 0, protein: 0 });
 }
 
+function combineNutritionData(nutritionA, nutritionB) {
+  return {
+      calories: (nutritionA.calories + nutritionB.calories) / 2,
+      fat: (nutritionA.fat + nutritionB.fat) / 2,
+      carbohydrates: (nutritionA.carbohydrates + nutritionB.carbohydrates) / 2,
+      protein: (nutritionA.protein + nutritionB.protein) / 2
+  };
+}
 
 export {
   averageNutrition,
   sumNutrition,
+  combineNutritionData
 };
