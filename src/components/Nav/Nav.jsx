@@ -4,6 +4,7 @@ import { ImageUpload } from '../Forms';
 import { Modal } from '@mui/material';
 import { FaHome, FaChartLine, FaBook, FaUser } from 'react-icons/fa';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
 import AddFoodNav from './AddFoodNav';
 import Camera from '../Forms/CameraAcess';
 
@@ -71,7 +72,11 @@ function Nav() {
     }
   };
 
-  const handleCloseModal = () => setShowImageUploadModal(false);
+  const handleCloseModal = () => {
+    setShowImageUploadModal(false);
+    setShowAddFoodNav(false);  
+    // Ensuring that the AddFoodNav also closes if open
+  };
 
 
   const handleNavClick = (page) => {
@@ -118,11 +123,17 @@ function Nav() {
         aria-labelledby="image-upload-modal"
         aria-describedby="Modal for image upload"
       >
-        <div className="modal-content">
+        <div className="modal-content p-4 relative">
           <ImageUpload onImageSelected={(file) => {
             console.log('Image selected:', file);
             handleCloseModal(); // Close the modal after an image is selected
           }} />
+          <button
+            className=" absolute  right-0 p-1 bg-white rounded-full shadow-lg"
+            onClick={handleCloseModal}
+          >
+            <CloseIcon fontSize="large" />
+          </button>
         </div>
       </Modal>
     </>
