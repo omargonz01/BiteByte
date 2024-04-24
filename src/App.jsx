@@ -24,7 +24,7 @@ function App() {
       <DateDisplay />
       <main className="main-content">
         <MacroBreakdown />
-        
+        {/* need to add the actual guide here (coming soon)  */}
       </main>
       <Nav />
     </div>

@@ -51,7 +51,7 @@ function Nav() {
 
     // Based on the action, do something
     switch (action) {
-      case 'search':
+      case 'upload':
         setShowImageUploadModal(true); // Determines visibility state to show the modal
         setShowAddFoodNav(false); // Optionally close the AddFoodNav
         break;
