@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import './Nav.css';
-import { ImageUpload } from '../Forms';
 import { Modal } from '@mui/material';
 import { FaHome, FaChartLine, FaBook, FaUser } from 'react-icons/fa';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
 import AddFoodNav from './AddFoodNav';
 import Camera from '../Forms/CameraAcess';
+import ImageUpload from '../Forms/ImageUpload';
 
-function Nav() {
+function Nav({ onNutritionDataReceived }) {
   const [showAddFoodNav, setShowAddFoodNav] = useState(false);
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null); 
+  const [capturedImage, setCapturedImage] = useState(null);
 
   //  handle the "plus" button click
   const handlePlusClick = () => {
@@ -112,26 +112,25 @@ function Nav() {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>
       )}
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
-      {showCamera && <Camera onCapture={handleImageCapture} onClear={handleImageClear} />}
+      {showCamera && <Camera onCapture={handleImageCapture} onClear={handleImageClear} onClose={() => setShowCamera(false)} />}
       {capturedImage && (
         <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
       )}
       {/* MUI Modal for image upload */}
       <Modal
         open={showImageUploadModal}
-        onClose={handleCloseModal}
+        onClose={() => setShowImageUploadModal(false)}
         aria-labelledby="image-upload-modal"
         aria-describedby="Modal for image upload"
       >
         <div className="modal-content p-4 relative">
           <ImageUpload onImageSelected={(file) => {
             console.log('Image selected:', file);
-            handleCloseModal(); // Close the modal after an image is selected
-          }} />
-          <button
-            className=" absolute  right-0 p-1 bg-white rounded-full shadow-lg"
-            onClick={handleCloseModal}
-          >
+            setShowImageUploadModal(false); 
+            // Close the modal after an image is selected
+          }} onNutritionData={onNutritionDataReceived} />
+          <button className="absolute right-0 p-1 bg-white rounded-full shadow-lg"
+            onClick={() => setShowImageUploadModal(false)}>
             <CloseIcon fontSize="large" />
           </button>
         </div>

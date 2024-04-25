@@ -9,6 +9,7 @@ body, #root {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: visible;
 }
 
 /* General app styling */
@@ -45,6 +46,7 @@ body, #root {
   align-items: center; /* Center children horizontally */
   width: 100%; /* Take the full width */
   padding: 1rem;
+  padding-bottom: 50px;
 }
 
 /* Adjust heading sizes in main content for responsive design */

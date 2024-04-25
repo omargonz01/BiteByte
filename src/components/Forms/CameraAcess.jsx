@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const Camera = ({ onCapture, onClear }) => {
+const Camera = ({ onCapture, onClear, onClose }) => {
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
 
@@ -45,10 +45,13 @@ const Camera = ({ onCapture, onClear }) => {
   };
 
   return (
-    <div>
-      <video ref={videoRef} autoPlay playsInline />
-      <button onClick={handleCapture}>Capture</button>
-      <button onClick={handleClear}>Clear</button>
+    <div className="camera-container" style={{ position: 'relative' }}>
+      <video ref={videoRef} autoPlay playsInline style={{ width: '100%' }} />
+      <div style={{ position: 'absolute', top: 0, padding: '10px', width: '100%', display: 'flex', justifyContent: 'space-around', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+        <button onClick={handleCapture} style={{ color: 'white', fontSize: '16px' }}>Capture</button>
+        <button onClick={handleClear} style={{ color: 'white', fontSize: '16px' }}>Clear</button>
+        <button onClick={onClose} style={{ color: 'white', fontSize: '16px' }}>Close</button>
+      </div>
     </div>
   );
 };

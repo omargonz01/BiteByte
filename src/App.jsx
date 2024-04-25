@@ -8,11 +8,16 @@ import './App.css';
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
+  const [nutritionData, setNutritionData] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowWelcome(false), 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleNutritionData = (data) => {
+    setNutritionData(data);
+  };
 
   if (showWelcome) {
     return <Welcome />;
@@ -23,10 +28,10 @@ function App() {
       <Header />
       <DateDisplay />
       <main className="main-content">
-        <MacroBreakdown />
+        <MacroBreakdown nutrition={nutritionData} />
         {/* need to add the actual guide here (coming soon)  */}
       </main>
-      <Nav />
+      <Nav onNutritionDataReceived={handleNutritionData} />
     </div>
   );
 }
