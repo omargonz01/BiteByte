@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 // Enable CORS for client-side app on a different port or domain
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app', 'http://localhost:5173'];
+    const allowedOrigins = ['https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app', 'https://bitebyte.onrender.com/', 'http://localhost:5173'];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -75,7 +75,10 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
 
     // Final combination of all data
     const combinedGeminiEdamamIngredientsNutrition = combineNutritionData(averagedTotalNutrition, sumAveragedIngredientsNutrition);
-    const finalNutritionData = formatNutritionValues(combinedGeminiEdamamIngredientsNutrition);
+    const finalNutritionData = {
+      dish: structuredData.dish, 
+      ...formatNutritionValues(combinedGeminiEdamamIngredientsNutrition)
+    };
 
     // Debug Check
     console.log("Edamam Ingredients Nutrition:", JSON.stringify(edamamIngredientsNutrition, null, 2));
@@ -90,6 +93,8 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     // Save and respond
     const newDataKey = admin.database().ref('dishes').push().key;
     await admin.database().ref(`dishes/${newDataKey}`).set(finalNutritionData);
+    await admin.database().ref(`dishes/Ingredients/${newDataKey}`).set(averagedIngredientsNutrition);
+
 
     return res.json({
       success: true,
