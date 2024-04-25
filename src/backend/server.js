@@ -14,6 +14,8 @@ const app = express();
 const upload = multer({ dest: 'uploads/' });
 const PORT = process.env.PORT || 5000;
 
+
+
 // Enable CORS for client-side app on a different port or domain
 app.use(cors({
   origin: 'http://localhost:5173', // Allow the client-side app to communicate with the server
@@ -23,6 +25,11 @@ app.use(express.json());
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+// Define a route for the root URL path
+app.get('/', (req, res) => {
+  res.send('Hello, World! This is BiteByte');
 });
 
 app.post('/analyze-image', upload.single('image'), async (req, res) => {
