@@ -7,7 +7,8 @@ const API_URL = 'https://bitebyte-backend.onrender.com' || 'http://localhost:500
 const uploadImageAndGetNutrition = async (imageFile) => {
   const formData = new FormData();
   formData.append('image', imageFile);
-
+  
+  console.log('API_URL:', API_URL);
   try {
     const response = await axios.post(`${API_URL}/analyze-image`, formData, {
       headers: {
