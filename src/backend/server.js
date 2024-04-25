@@ -15,12 +15,17 @@ const upload = multer({ dest: 'uploads/' });
 const PORT = process.env.PORT || 5000;
 
 
-
 // Enable CORS for client-side app on a different port or domain
 app.use(cors({
-  origin: ['https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app' || 'http://localhost:5173'],
+  origin: function (origin, callback) {
+    const allowedOrigins = ['https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app', 'http://localhost:5173'];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed'));
+    }
+  }
 }));
-
 
 app.use(express.json());
 
