@@ -27,6 +27,11 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+// Define a route for the root URL path
+app.get('/', (req, res) => {
+  res.send('Hello, World! This is BiteByte');
+});
+
 app.post('/analyze-image', upload.single('image'), async (req, res) => {
   let responseToSend = { success: false, error: 'An error occurred' };
 
