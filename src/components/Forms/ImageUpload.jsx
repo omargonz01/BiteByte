@@ -10,14 +10,14 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
             setSelectedImage(file);
 
             try {
-                // Here you call the API service function and wait for the nutrition data
+                // Call the API service function and wait for the nutrition data
                 const nutritionData = await uploadImageAndGetNutrition(file);
-                console.log(nutritionData); // Log or set state with this data
-                // Instead of logging now, we call the callback with nutrition data
+                // Call the callback with the received nutrition data
                 onNutritionData(nutritionData);
-                onImageSelected(file); 
+                // Also call the onImageSelected callback to handle the selected image
+                onImageSelected(URL.createObjectURL(file)); 
             } catch (error) {
-                // Handle any errors here, such as updating the state to show an error message to the user
+                // Handle any errors here
                 console.error('Error fetching nutrition data:', error);
             }
         }
