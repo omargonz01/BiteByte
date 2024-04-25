@@ -14,6 +14,16 @@ const app = express();
 const upload = multer({ dest: 'uploads/' });
 const PORT = process.env.PORT || 5000;
 
+// Initialize Firebase Admin with environment variables
+let serviceAccount;
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, 'base64').toString('ascii'));
+} else {
+  // Fallback to JSON file for local development or if not using env variable
+  serviceAccount = require('./path/to/serviceAccountKey.json');
+}
+
+
 // Enable CORS for client-side app on a different port or domain
 app.use(cors({
   origin: 'http://localhost:5173', // Allow the client-side app to communicate with the server
