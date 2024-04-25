@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 // Enable CORS for client-side app on a different port or domain
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app', 'https://bitebyte-app.onrender.com', 'http://localhost:5173'];
+    const allowedOrigins = ['https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app', 'https://bitebyte.onrender.com/', 'http://localhost:5173'];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
