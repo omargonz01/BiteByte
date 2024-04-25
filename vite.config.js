@@ -18,7 +18,7 @@ export default defineConfig({
         theme_color: "#000000",
         icons: [
           {
-            src: "/src/assets/Images/appIcon.png",
+            src: "/src/assets/appIcon.png",
             sizes: "192x192",
             type: "image/png",
           },
@@ -27,3 +27,6 @@ export default defineConfig({
     }),
   ],
 });
+
+// !!!!for production need to change the src path to src: "/dist/src/assets/appIcon.png", on vite config and manifest!!!!
+
