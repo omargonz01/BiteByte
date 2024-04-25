@@ -18,8 +18,9 @@ const PORT = process.env.PORT || 5000;
 
 // Enable CORS for client-side app on a different port or domain
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow the client-side app to communicate with the server
+  origin: [process.env.VITE_APP_FRONTEND_URL || 'http://localhost:5173'],
 }));
+
 
 app.use(express.json());
 

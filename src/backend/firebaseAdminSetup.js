@@ -17,7 +17,7 @@ if (process.env.FIREBASE_SERVICE_ACCOUNT) {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://your-database-url.firebaseio.com"
+  databaseURL: "https://bitebyte-app-default-rtdb.firebaseio.com"
 });
 
 export { admin };

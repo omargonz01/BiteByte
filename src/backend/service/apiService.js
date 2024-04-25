@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000'; 
+// Ensure your environment variable in .env file is prefixed with VITE_
+const API_URL = import.meta.env.VITE_APP_BACKEND_URL || 'http://localhost:5000';
 
 // Function to upload the image and get the nutritional data
 const uploadImageAndGetNutrition = async (imageFile) => {
