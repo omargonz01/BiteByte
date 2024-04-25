@@ -1,39 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import './MacroBreakdown.css';
 
 const MacroBreakdown = ({ nutrition }) => {
-  // Define state for macros with default values
-  const [macros, setMacros] = useState({
-    carbs: 0,
-    protein: 0,
-    fat: 0,
-    calories: 0
-  });
-
-  // Effect to update macros state whenever nutrition prop changes
-  useEffect(() => {
-    if (nutrition) {
-      setMacros({
-        carbs: nutrition.carbs || 0,
-        protein: nutrition.protein || 0,
-        fat: nutrition.fat || 0,
-        calories: nutrition.calories || 0
-      });
-    }
-  }, [nutrition]);
-
   return (
     <div className="macro-container">
       <div className="progress-bar">
         <CircularProgressbar
-          value={macros.calories}
-          text={`${macros.calories.toFixed(2)}`}
-          maxValue={2000}  
+          value={nutrition.calories}
+          text={`${nutrition.calories.toFixed(2)} cal`}
+          maxValue={2000}  // Adjust this value as per your application's needs
           styles={buildStyles({
             textSize: '16px',
-            pathColor: `rgba(62, 152, 199, ${macros.calories / 2000})`,
+            pathColor: `rgba(62, 152, 199, ${nutrition.calories / 2000})`,
             textColor: '#4b5563',
             trailColor: '#d6d6d6',
           })}
@@ -42,23 +21,17 @@ const MacroBreakdown = ({ nutrition }) => {
       </div>
       <div className="macro-nutrients">
         <div className="macro-nutrient">
-          <span className="nutrient-value">Carbs</span>
-          <span className="nutrient-label">/ {macros.carbs.toFixed(2)}g</span>
+          <span className="nutrient-value">{nutrition.carbohydrates.toFixed(2)}g</span>
+          <span className="nutrient-label">Carbs</span>
         </div>
-        <div className="divider"></div>
         <div className="macro-nutrient">
-          <span className="nutrient-value">Protein</span>
-          <span className="nutrient-label">/ {macros.protein.toFixed(2)}g</span>
+          <span className="nutrient-value">{nutrition.protein.toFixed(2)}g</span>
+          <span className="nutrient-label">Protein</span>
         </div>
-        <div className="divider"></div>
         <div className="macro-nutrient">
-          <span className="nutrient-value">Fat</span>
-          <span className="nutrient-label">/ {macros.fat.toFixed(2)}g</span>
+          <span className="nutrient-value">{nutrition.fat.toFixed(2)}g</span>
+          <span className="nutrient-label">Fat</span>
         </div>
-      </div>
-      <div className="guide-tag">
-        <span className="coming-soon">Coming Soon</span>
-        <span>Guide</span>
       </div>
     </div>
   );
