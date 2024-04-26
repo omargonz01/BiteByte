@@ -7,6 +7,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddFoodNav from './AddFoodNav';
 import Camera from '../Forms/CameraAcess';
 import ImageUpload from '../Forms/ImageUpload';
+import uploadImageAndGetNutrition from '../../backend/service/apiService';
+
 
 function Nav({ onNutritionDataReceived }) {
   const [showAddFoodNav, setShowAddFoodNav] = useState(false);
