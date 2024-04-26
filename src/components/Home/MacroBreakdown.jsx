@@ -2,36 +2,56 @@ import React from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
+const dailyValues = {
+  carbs: 325,   
+  protein: 200,   
+  fat: 78       
+};
+
+const calculatePercentage = (value, dailyValue) => (value / dailyValue) * 100;
+
+const MacroCounter = ({ label, value }) => (
+  <div className="py-2 flex flex-col items-center gap-2">
+    <div className="text-center text-neutral-800 text-sm font-normal">{label}</div>
+    <div className="w-20 h-2.5 bg-stone-300 rounded-full overflow-hidden">
+      <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${Math.min(value, 100)}%` }}></div>
+    </div>
+    <div className="text-center text-neutral-800 text-sm font-normal">{value.toFixed(0)}g</div>
+  </div>
+);
+
 const MacroBreakdown = ({ nutrition }) => {
+  // Calculate the percentage of the daily value for each macro
+  const carbsPercent = calculatePercentage(nutrition.carbohydrates, dailyValues.carbs);
+  const proteinPercent = calculatePercentage(nutrition.protein, dailyValues.protein);
+  const fatPercent = calculatePercentage(nutrition.fat, dailyValues.fat);
+
+  // CircularProgressbar styles
+  const progressBarStyles = buildStyles({
+    pathColor: `rgba(62, 152, 199, ${nutrition.calories / 2000})`,
+    textColor: '#4b5563',
+    trailColor: '#d6d6d6',
+    backgroundColor: '#3e98c7', 
+  });
+
   return (
-    <div className="macro-container">
-      <div className="progress-bar">
+    <div className="flex flex-col items-center">
+      <div style={{ width: '70%', margin: 'auto' }}>
         <CircularProgressbar
           value={nutrition.calories}
-          text={`${nutrition.calories.toFixed(2)} cal`}
-          maxValue={2000}  // Adjust this value as per your application's needs
-          styles={buildStyles({
-            textSize: '16px',
-            pathColor: `rgba(62, 152, 199, ${nutrition.calories / 2000})`,
-            textColor: '#4b5563',
-            trailColor: '#d6d6d6',
-          })}
+          text={`${nutrition.calories.toFixed(0)}`}
+          maxValue={2000} // Adjust according to your needs
+          styles={progressBarStyles}
         />
-        <div className="progress-label">CALS EATEN</div>
+        <p className="text-md font-semibold text-center text-gray-700 mt-2 mb-3">CALS EATEN</p>
       </div>
-      <div className="macro-nutrients">
-        <div className="macro-nutrient">
-          <span className="nutrient-value">{nutrition.carbohydrates.toFixed(2)}g</span>
-          <span className="nutrient-label">Carbs</span>
-        </div>
-        <div className="macro-nutrient">
-          <span className="nutrient-value">{nutrition.protein.toFixed(2)}g</span>
-          <span className="nutrient-label">Protein</span>
-        </div>
-        <div className="macro-nutrient">
-          <span className="nutrient-value">{nutrition.fat.toFixed(2)}g</span>
-          <span className="nutrient-label">Fat</span>
-        </div>
+
+      <div className="text-stone-600 text-sm font-normal font-['Work Sans'] mb-3">MACRO BREAKDOWN v</div>
+      
+      <div className="w-full p-4 bg-stone-50 rounded-2xl shadow-md inline-flex justify-around items-center mt-4">
+        <MacroCounter label="Carbs" value={carbsPercent} />
+        <MacroCounter label="Protein" value={proteinPercent} />
+        <MacroCounter label="Fat" value={fatPercent} />
       </div>
     </div>
   );
