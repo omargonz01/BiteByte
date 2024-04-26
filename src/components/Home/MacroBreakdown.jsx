@@ -44,7 +44,7 @@ const MacroBreakdown = ({ nutrition }) => {
         <CircularProgressbar
           value={nutrition.calories}
           text={`${nutrition.calories.toFixed(0)}`}
-          maxValue={2000} // Adjust according to your needs
+          maxValue={2000} 
           styles={progressBarStyles}
         />
         <p className="text-md font-semibold text-center text-gray-700 mt-2 mb-3">CALS EATEN</p>
