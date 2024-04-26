@@ -13,12 +13,16 @@ import { averageNutrition, sumNutrition, combineNutritionData } from './service/
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 const PORT = process.env.PORT || 5000;
+const allowedOrigins = [
+  'https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app',
+  'https://bitebyte.onrender.com',
+  'http://localhost:5173'
+];
 
 
 // Enable CORS for client-side app on a different port or domain
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = ['https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app', 'https://bitebyte.onrender.com/', 'http://localhost:5173'];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -76,8 +80,9 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     // Final combination of all data
     const combinedGeminiEdamamIngredientsNutrition = combineNutritionData(averagedTotalNutrition, sumAveragedIngredientsNutrition);
     const finalNutritionData = {
-      dish: structuredData.dish, 
-      ...formatNutritionValues(combinedGeminiEdamamIngredientsNutrition)
+      dish: structuredData.dish, // The name of the dish
+      macros: formatNutritionValues(combinedGeminiEdamamIngredientsNutrition), // The formatted macro values
+      ingredients: averagedIngredientsNutrition // The detailed nutrition per ingredient
     };
 
     // Debug Check
@@ -93,8 +98,6 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     // Save and respond
     const newDataKey = admin.database().ref('dishes').push().key;
     await admin.database().ref(`dishes/${newDataKey}`).set(finalNutritionData);
-    await admin.database().ref(`dishes/Ingredients/${newDataKey}`).set(averagedIngredientsNutrition);
-
 
     return res.json({
       success: true,
