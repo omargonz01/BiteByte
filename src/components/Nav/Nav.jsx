@@ -15,6 +15,8 @@ function Nav({ onNutritionDataReceived }) {
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   //  handle the "plus" button click
   const handlePlusClick = () => {
@@ -28,17 +30,18 @@ function Nav({ onNutritionDataReceived }) {
 
   const handleImageCapture = async (imageBlob) => {
     console.log('Captured image blob:', imageBlob);
-    // Convert the blob to a file object (if needed)
+    // Convert the blob to a file object
     const imageFile = new File([imageBlob], "capturedImage.jpg", { type: 'image/jpeg' });
-    
+    setIsLoading(true);  // Assuming you have an isLoading state to show loading feedback
+
     try {
       // Upload the image and wait for the nutrition data
       const nutritionData = await uploadImageAndGetNutrition(imageFile);
-      console.log(nutritionData); // Handle the received nutrition data
-      // You might want to set this data to state, or pass to another component
+      onNutritionDataReceived(nutritionData); // Pass the nutrition data up to the parent component
     } catch (error) {
-      // Handle any errors from the API call here
       console.error('Error fetching nutrition data:', error);
+    } finally {
+      setIsLoading(false); // Set loading to false after the process is complete
     }
   };
 
@@ -114,7 +117,13 @@ function Nav({ onNutritionDataReceived }) {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>
       )}
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
-      {showCamera && <Camera onCapture={handleImageCapture} onClear={handleImageClear} onClose={() => setShowCamera(false)} />}
+      {showCamera && (
+      <Camera
+        onCapture={handleImageCapture}
+        onClear={handleImageClear}
+        onClose={() => setShowCamera(false)}
+      />
+    )}      
       {capturedImage && (
         <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
       )}
