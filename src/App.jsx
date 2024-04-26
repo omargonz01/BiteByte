@@ -22,8 +22,18 @@ function App() {
 
   const handleNutritionData = (data) => {
     console.log("Nutrition data received in App:", data);
-    if (data && data.success) {
-      setNutritionData(data.sumAveragedIngredientsNutrition); // Extracting the specific data slice
+    // Check if the received data has the macros and set up flag
+    if (data && data.success && data.finalNutritionData && data.finalNutritionData.macros) {
+      // Change where im pulling data from
+      setNutritionData({
+        calories: data.finalNutritionData.macros.calories,
+        carbohydrates: data.finalNutritionData.macros.carbohydrates,
+        protein: data.finalNutritionData.macros.protein,
+        fat: data.finalNutritionData.macros.fat
+      });
+    } else {
+      // Log an error if the data is missing the required fields
+      console.error("Received data is missing 'finalNutritionData' or 'macros'");
     }
   };
 
