@@ -1,9 +1,12 @@
 import React from 'react';
-import './DateDisplay.css'; // Make sure to create this CSS file
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'; // Correctly imported
+import './DateDisplay.css'; 
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
+import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'; 
 
 const DateDisplay = () => {
-  // Function to format the date as "TODAY, APR 17"
+  
   const getFormattedDate = () => {
     const now = new Date();
     const options = { month: 'short', day: 'numeric' };
@@ -23,14 +26,20 @@ const DateDisplay = () => {
 
   return (
     <div className="date-display-container">
-      <button className="date-change-button" onClick={goToPreviousDay}>
-        <FaArrowLeft className="date-arrow-icon" /> {/* Corrected Icon */}
-      </button>
-      <span className="date-text">{getFormattedDate()}</span>
-      <button className="date-change-button" onClick={goToNextDay}>
-        <FaArrowRight className="date-arrow-icon" /> {/* Corrected Icon */}
-      </button>
-    </div>
+  <button className="date-change-button" onClick={goToPreviousDay}>
+    <ArrowBackIosOutlinedIcon className="date-arrow-icon" />
+  </button>
+  
+  <div className="date-text-container">
+    <CalendarTodayOutlinedIcon className="calendar-icon"sx={{ fontSize: '16px', width: '16px', height: '16px' }}/>
+    <span className="date-text">{getFormattedDate()}</span>
+  </div>
+  
+  <button className="date-change-button" onClick={goToNextDay}>
+    <ArrowForwardIosOutlinedIcon className="date-arrow-icon" />
+  </button>
+</div>
+
   );
 };
 

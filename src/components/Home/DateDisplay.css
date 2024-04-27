@@ -1,26 +1,44 @@
 .date-display-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem; /* Adjust the font size as needed */
-    color: #4B5563; /* Adjust the color to match your design */
-    margin: 16px 0; /* Adjust the margin to fit your layout */
-  }
-  
-  .date-change-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .date-arrow-icon {
-    width: 24px; /* Adjust as needed */
-    height: 24px; /* Adjust as needed */
-    fill: currentColor; /* Icon color will be inherited from the button */
-  }
-  
-  .date-text {
-    margin: 0 12px; /* Space between the arrows and the date */
-    /* Additional styling to match your design */
-  }
-  
+  display: flex;
+  align-items: center; /* Vertically center the items */
+  justify-content: center; /* Center items horizontally */
+  padding: 1rem; /* Keep padding if you need some space around the container */
+}
+
+.date-arrow-icon {
+  /* Style your arrow icons if needed */
+  font-size: 1.2rem; /* Adjust to match the design */
+}
+
+.date-change-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0; /* Remove padding to make hit area just the icon size */
+}
+
+.date-text-container {
+  display: flex;
+  align-items: center; /* Align the text and icon */
+  gap: 0.5rem; /* Space between the icon and the text */
+  flex-grow: 1; /* Make the text container grow to push the arrows to the sides */
+  justify-content: center; /* Center the date text and icon */
+}
+
+.calendar-icon {
+  font-size: 1.2rem; /* Adjust to match the design */
+}
+
+.date-text {
+  font-weight: bold; /* If you want the text to be bold */
+  font-size: 1rem; /* Adjust to match the design */
+}
+
+/* Add additional margin to the arrows if necessary */
+.date-change-button:first-child {
+  margin-right: auto; /* Pushes the button to the left */
+}
+
+.date-change-button:last-child {
+  margin-left: auto; /* Pushes the button to the right */
+}

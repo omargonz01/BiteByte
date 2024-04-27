@@ -42,6 +42,7 @@ function App() {
   }
 
   return (
+    
     <div className="app">
       <Header />
       <DateDisplay />

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import './Nav.css';
 import { Modal } from '@mui/material';
-import { FaHome, FaChartLine, FaBook, FaUser } from 'react-icons/fa';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import FeaturedPlayListOutlinedIcon from '@mui/icons-material/FeaturedPlayListOutlined';
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import AddFoodNav from './AddFoodNav';
 import Camera from '../Forms/CameraAcess';
@@ -92,22 +95,22 @@ function Nav({ onNutritionDataReceived }) {
     <>
       <nav className="nav w-full fixed bottom-0 left-0 z-10">
         <a href="#home" className="nav-item" onClick={() => handleNavClick('Home')}>
-          <FaHome className="nav-icon" />
+          <HomeOutlinedIcon className="nav-icon"/>
           <span>Home</span>
         </a>
         <a href="#stats" className="nav-item" onClick={() => handleNavClick('Stats')}>
-          <FaChartLine className="nav-icon" />
+          <CalendarMonthOutlinedIcon className="nav-icon" />
           <span>Stats</span>
         </a>
         <button className="nav-item" onClick={handlePlusClick}>
-          <AddCircleOutlineIcon className="nav-icon" />
+          <AddCircleOutlinedIcon className="nav-icon" sx={{ fontSize: '46px', width: '46px', height: '46px' }}  />
         </button>
         <a href="#recipes" className="nav-item" onClick={() => handleNavClick('Recipes')}>
-          <FaBook className="nav-icon" />
+          <FeaturedPlayListOutlinedIcon className="nav-icon text-3xl" />
           <span>Recipes</span>
         </a>
         <a href="#profile" className="nav-item" onClick={() => handleNavClick('Profile')}>
-          <FaUser className="nav-icon" />
+          <PermIdentityOutlinedIcon className="nav-icon" />
           <span>Profile</span>
         </a>
       </nav>

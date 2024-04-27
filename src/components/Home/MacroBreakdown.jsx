@@ -1,6 +1,7 @@
 import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import "./MacroBreakdown.css";
 
 const dailyValues = {
   carbs: 325,
@@ -21,8 +22,8 @@ const MacroCounter = ({ label, value, percentage }) => (
     </div>
     <div className="w-20 h-2.5 bg-stone-300 rounded-full overflow-hidden">
       <div
-        className="bg-blue-600 h-2.5 rounded-full"
-        style={{ width: `${Math.min(percentage, 100)}%` }}
+        className="custom-progress-bar h-2.5 rounded-full" 
+        style={{ width: `${Math.min(percentage, 100)}%`, backgroundColor: '#5A6D57' }} 
       ></div>
     </div>
     <div className="text-center text-neutral-800 text-sm font-normal">
@@ -45,7 +46,7 @@ const MacroBreakdown = ({ nutrition }) => {
 
   // CircularProgressbar styles
   const progressBarStyles = buildStyles({
-    pathColor: `rgba(62, 152, 199, ${nutrition.calories / 2000})`,
+    pathColor: `#5A6D57`,
     textColor: "#4b5563",
     trailColor: "#d6d6d6",
     backgroundColor: "#3e98c7",
