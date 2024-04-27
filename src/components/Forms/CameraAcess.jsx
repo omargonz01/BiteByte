@@ -52,6 +52,11 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
 
   const handleImageCapture = async (imageBlob) => {
     setIsProcessing(true); // Start the spinner before processing the image
+    if (stream) {
+      // Stop all tracks in the stream to turn off the camera
+      stream.getTracks().forEach(track => track.stop());
+      setStream(null); // Set stream to null to indicate it's no longer active
+    }
     console.log('Captured image blob:', imageBlob);
     // Convert the blob to a file object (if needed)
     const imageFile = new File([imageBlob], "capturedImage.jpg", { type: 'image/jpeg' });
