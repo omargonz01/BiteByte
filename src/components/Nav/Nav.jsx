@@ -122,6 +122,7 @@ function Nav({ onNutritionDataReceived }) {
         onCapture={handleImageCapture}
         onClear={handleImageClear}
         onClose={() => setShowCamera(false)}
+        onNutritionDataReceived={onNutritionDataReceived}
       />
     )}      
       {capturedImage && (

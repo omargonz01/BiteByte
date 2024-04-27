@@ -21,7 +21,7 @@ function App() {
   }, []);
 
   const handleNutritionData = (data) => {
-    console.log("Nutrition data received in App:", data);
+    // console.log("Nutrition data received in App:", data);
     // Check if the received data has the macros and set up flag
     if (data && data.success && data.finalNutritionData && data.finalNutritionData.macros) {
       // Change where im pulling data from

@@ -86,12 +86,12 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     };
 
     // Debug Check
-    console.log("Edamam Ingredients Nutrition:", JSON.stringify(edamamIngredientsNutrition, null, 2));
-    console.log("Averaged Ingredients Nutrition:", JSON.stringify(averagedIngredientsNutrition, null, 2));
-    console.log("Sum Averaged Ingredients Nutrition:", JSON.stringify(averagedTotalNutrition, null, 2));
-    console.log("Gemini Total Nutrition:", JSON.stringify(structuredData.totals, null, 2));
-    console.log("Edamam Total Nutrition:", JSON.stringify(edamamTotalNutrition, null, 2));
-    console.log("Averaged (Gemini & Edamam) Total Nutrition:", JSON.stringify(averagedTotalNutrition, null, 2));
+    // console.log("Edamam Ingredients Nutrition:", JSON.stringify(edamamIngredientsNutrition, null, 2));
+    // console.log("Averaged Ingredients Nutrition:", JSON.stringify(averagedIngredientsNutrition, null, 2));
+    // console.log("Sum Averaged Ingredients Nutrition:", JSON.stringify(averagedTotalNutrition, null, 2));
+    // console.log("Gemini Total Nutrition:", JSON.stringify(structuredData.totals, null, 2));
+    // console.log("Edamam Total Nutrition:", JSON.stringify(edamamTotalNutrition, null, 2));
+    // console.log("Averaged (Gemini & Edamam) Total Nutrition:", JSON.stringify(averagedTotalNutrition, null, 2));
     console.log("Averaged (Gemini, Edamam, & Ingredients) Total Nutrition:", JSON.stringify(finalNutritionData, null, 2));
 
 
@@ -102,13 +102,13 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     return res.json({
       success: true,
       firebaseKey: newDataKey,
-      data: structuredData,  // Unaltered initial data from image analysis
-      edamamIngredientsNutrition,  // Detailed nutrition per ingredient from Edamam
-      averagedIngredientsNutrition,  // Average of Gemini and Edamam data per ingredient
-      sumAveragedIngredientsNutrition,  // Sum of the averaged ingredient nutrition
-      geminiTotalNutrition: structuredData.totals,  // Gemini original total nutrition calculation
-      edamamTotalNutrition,  // Sum of all Edamam nutritional data for all ingredients
-      averagedTotalNutrition,  // Average of Gemini's total nutrition and Edamam's total nutrition
+      // data: structuredData,  // Unaltered initial data from image analysis
+      // edamamIngredientsNutrition,  // Detailed nutrition per ingredient from Edamam
+      // averagedIngredientsNutrition,  // Average of Gemini and Edamam data per ingredient
+      // sumAveragedIngredientsNutrition,  // Sum of the averaged ingredient nutrition
+      // geminiTotalNutrition: structuredData.totals,  // Gemini original total nutrition calculation
+      // edamamTotalNutrition,  // Sum of all Edamam nutritional data for all ingredients
+      // averagedTotalNutrition,  // Average of Gemini's total nutrition and Edamam's total nutrition
       finalNutritionData  // Final formatted nutritional data (Gemini + Edamam + SummedIngredients)
     });
 
