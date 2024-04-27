@@ -7,7 +7,7 @@ import bitebyteSpinner from '../../assets/bite1.gif';
 const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
   const videoRef = useRef(null);
   const [stream, setStream] = useState(null);
-  const [useFrontCamera, setUseFrontCamera] = useState(true);
+  const [useFrontCamera, setUseFrontCamera] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false); 
 
   // Access the user's media devices with the specified camera facing mode
