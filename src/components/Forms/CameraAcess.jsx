@@ -74,6 +74,7 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
       console.error('Error fetching nutrition data:', error);
     } finally {
       setIsProcessing(false); // Stop the spinner after processing is complete
+      onClose(); // Call the onClose function passed as a prop to close the camera view
     }
 };
 
