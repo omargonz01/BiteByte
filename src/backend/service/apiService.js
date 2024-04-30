@@ -2,7 +2,6 @@ import axios from 'axios';
 
 // Ensure your environment variable in .env file is prefixed with VITE_
 const API_URL = 'https://bitebyte-backend.onrender.com' || 'http://localhost:5000';
-// const API_URL = 'http://localhost:5000';
 
 // Function to upload the image and get the nutritional data
 const uploadImageAndGetNutrition = async (imageFile) => {
@@ -24,4 +23,21 @@ const uploadImageAndGetNutrition = async (imageFile) => {
   }
 };
 
-export default uploadImageAndGetNutrition;
+const analyzeTextAndGetNutrition = async (textDescription) => {
+  try {
+      const response = await axios.post(`${API_URL}/analyze-text`, {
+          description: textDescription
+      }, {
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      console.log(response.data);
+      return response.data;
+  } catch (error) {
+      console.error('Error analyzing text:', error);
+      throw error;
+  }
+};
+
+export default uploadImageAndGetNutrition; analyzeTextAndGetNutrition;
