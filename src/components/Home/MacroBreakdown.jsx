@@ -34,15 +34,18 @@ const MacroCounter = ({ label, value, percentage }) => (
 
 const MacroBreakdown = ({ nutrition }) => {
   // Calculate the percentage of the daily value for each macro
-  const carbsPercent = calculatePercentage(
+  const carbsPercent = nutrition && nutrition.carbohydrates ? calculatePercentage(
     nutrition.carbohydrates,
     dailyValues.carbs
-  );
-  const proteinPercent = calculatePercentage(
+  ) : 0;
+  const proteinPercent = nutrition && nutrition.protein ? calculatePercentage(
     nutrition.protein,
     dailyValues.protein
-  );
-  const fatPercent = calculatePercentage(nutrition.fat, dailyValues.fat);
+  ) : 0;
+  const fatPercent = nutrition && nutrition.fat ? calculatePercentage(nutrition.fat, dailyValues.fat) : 0;
+
+  // Ensure calories is defined before calling toFixed()
+  const caloriesValue = nutrition && nutrition.calories ? nutrition.calories.toFixed(0) : '0';
 
   // CircularProgressbar styles
   const progressBarStyles = buildStyles({
@@ -56,8 +59,8 @@ const MacroBreakdown = ({ nutrition }) => {
     <div className="flex flex-col items-center">
       <div style={{ width: "70%", margin: "auto" }}>
         <CircularProgressbar
-          value={nutrition.calories}
-          text={`${nutrition.calories.toFixed(0)}`}
+          value={Number(caloriesValue)} // Convert string back to number if needed
+          text={caloriesValue}
           maxValue={2000}
           styles={progressBarStyles}
         />
@@ -73,17 +76,17 @@ const MacroBreakdown = ({ nutrition }) => {
       <div className="w-full p-4 bg-stone-50 rounded-2xl shadow-md inline-flex justify-around items-center mt-4">
         <MacroCounter
           label="Carbs"
-          value={nutrition.carbohydrates}
+          value={nutrition && nutrition.carbohydrates ? nutrition.carbohydrates : 0}
           percentage={carbsPercent}
         />
         <MacroCounter
           label="Protein"
-          value={nutrition.protein}
+          value={nutrition && nutrition.protein ? nutrition.protein : 0}
           percentage={proteinPercent}
         />
         <MacroCounter
           label="Fat"
-          value={nutrition.fat}
+          value={nutrition && nutrition.fat ? nutrition.fat : 0}
           percentage={fatPercent}
         />
       </div>

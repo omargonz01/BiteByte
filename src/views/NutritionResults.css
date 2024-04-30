@@ -1,0 +1,90 @@
+.nutrition-results {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.meal-header {
+  background-color: #f8f8f8;
+  padding: 10px;
+  text-align: center;
+}
+
+.meal-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.meal-header p {
+  margin: 5px 0 0;
+  color: #666;
+  font-size: 12px;
+}
+
+.meal-header button {
+  margin-top: 5px;
+  padding: 5px 10px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.meal-header button:hover {
+  background-color: #4cae4c;
+}
+
+.meal-image img {
+  width: 100%;
+  display: block;
+}
+
+.nutrition-breakdown {
+  padding: 15px;
+}
+
+.nutrition-info {
+  margin-bottom: 20px;
+}
+
+.nutrition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.nutrition-item span, .nutrition-item label {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.nutrition-item input {
+  flex: 2;
+  padding: 5px;
+  font-size: 14px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.save-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #4cae4c;
+}
