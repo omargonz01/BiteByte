@@ -8,10 +8,9 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import AddFoodNav from './AddFoodNav';
-import Camera from '../Forms/CameraAcess';
+import Camera from '../Forms/CameraAccess';  
 import ImageUpload from '../Forms/ImageUpload';
 import uploadImageAndGetNutrition from '../../backend/service/apiService';
-
 
 function Nav({ onNutritionDataReceived }) {
   const [showAddFoodNav, setShowAddFoodNav] = useState(false);
@@ -20,13 +19,13 @@ function Nav({ onNutritionDataReceived }) {
   const [capturedImage, setCapturedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
+  
   //  handle the "plus" button click
   const handlePlusClick = () => {
     setShowAddFoodNav(true);
   };
 
-  //  handle closing the AddFoodNav
+    //  handle closing the AddFoodNav
   const handleCloseAddFoodNav = () => {
     setShowAddFoodNav(false);
   };
@@ -35,19 +34,21 @@ function Nav({ onNutritionDataReceived }) {
     console.log('Captured image blob:', imageBlob);
     // Convert the blob to a file object
     const imageFile = new File([imageBlob], "capturedImage.jpg", { type: 'image/jpeg' });
-    setIsLoading(true);  // Assuming you have an isLoading state to show loading feedback
-
-    try {
+    setIsLoading(true);
+    try {      
       // Upload the image and wait for the nutrition data
       const nutritionData = await uploadImageAndGetNutrition(imageFile);
-      onNutritionDataReceived(nutritionData); // Pass the nutrition data up to the parent component
+      if (nutritionData) {
+        onNutritionDataReceived(nutritionData);
+      } else {
+        console.error('Failed to receive nutrition data.');
+      }
     } catch (error) {
       console.error('Error fetching nutrition data:', error);
     } finally {
       setIsLoading(false); // Set loading to false after the process is complete
     }
   };
-
 
   const handleImageClear = () => {
     setCapturedImage(null); // Clear the captured image
@@ -56,8 +57,7 @@ function Nav({ onNutritionDataReceived }) {
   };
 
   const handleSelectAction = (action) => {
-    console.log('Action received:', action); // Debug log
-
+    console.log('Action received:', action);
     // Based on the action, do something
     switch (action) {
       case 'upload':
@@ -76,16 +76,13 @@ function Nav({ onNutritionDataReceived }) {
         break;
       default:
         console.log(`Unknown action: ${action}`);
-        break;
     }
   };
 
   const handleCloseModal = () => {
     setShowImageUploadModal(false);
-    setShowAddFoodNav(false);  
-    // Ensuring that the AddFoodNav also closes if open
+    setShowAddFoodNav(false);
   };
-
 
   const handleNavClick = (page) => {
     console.log(`${page} clicked`);
@@ -103,7 +100,7 @@ function Nav({ onNutritionDataReceived }) {
           <span>Stats</span>
         </a>
         <button className="nav-item" onClick={handlePlusClick}>
-          <AddCircleOutlinedIcon className="nav-icon" sx={{ fontSize: '46px', width: '46px', height: '46px' }}  />
+          <AddCircleOutlinedIcon className="nav-icon" sx={{ fontSize: '46px', width: '46px', height: '46px' }} />
         </button>
         <a href="#recipes" className="nav-item" onClick={() => handleNavClick('Recipes')}>
           <FeaturedPlayListOutlinedIcon className="nav-icon text-3xl" />
@@ -115,37 +112,17 @@ function Nav({ onNutritionDataReceived }) {
         </a>
       </nav>
 
-      {/* Overlay to dim main content and add 2nd nav */}
-      {showAddFoodNav && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>
-      )}
+      {showAddFoodNav && <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>}
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
-      {showCamera && (
-      <Camera
-        onCapture={handleImageCapture}
-        onClear={handleImageClear}
-        onClose={() => setShowCamera(false)}
-        onNutritionDataReceived={onNutritionDataReceived}
-      />
-    )}      
-      {capturedImage && (
-        <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
-      )}
-      {/* MUI Modal for image upload */}
-      <Modal
-        open={showImageUploadModal}
-        onClose={() => setShowImageUploadModal(false)}
-        aria-labelledby="image-upload-modal"
-        aria-describedby="Modal for image upload"
-      >
+      {showCamera && <Camera onCapture={handleImageCapture} onClear={handleImageClear} onClose={() => setShowCamera(false)} />}
+      {capturedImage && <img src={URL.createObjectURL(capturedImage)} alt="Captured" />}
+      <Modal open={showImageUploadModal} onClose={handleCloseModal} aria-labelledby="image-upload-modal" aria-describedby="Modal for image upload">
         <div className="modal-content p-4 relative">
           <ImageUpload onImageSelected={(file) => {
             console.log('Image selected:', file);
-            setShowImageUploadModal(false); 
-            // Close the modal after an image is selected
+            setShowImageUploadModal(false);
           }} onNutritionData={onNutritionDataReceived} />
-          <button className="absolute right-0 p-1 bg-white rounded-full shadow-lg"
-            onClick={() => setShowImageUploadModal(false)}>
+          <button className="absolute right-0 p-1 bg-white rounded-full shadow-lg" onClick={() => setShowImageUploadModal(false)}>
             <CloseIcon fontSize="large" />
           </button>
         </div>
