@@ -59,12 +59,12 @@ function App() {
       dish: updatedData.mealName,
       imageURL: updatedData.imageURL,
       macros: {
-        calories: updatedData.totalCalories,
-        carbohydrates: updatedData.totalCarbs,
-        protein: updatedData.totalProteins,
-        fat: updatedData.totalFat
+        calories: prevData.macros.calories + parseFloat(updatedData.totalCalories),
+        carbohydrates: prevData.macros.carbohydrates + parseFloat(updatedData.totalCarbs),
+        protein: prevData.macros.protein + parseFloat(updatedData.totalProteins),
+        fat: prevData.macros.fat + parseFloat(updatedData.totalFat)
       },
-      ingredients: updatedData.ingredients,
+      ingredients: [...prevData.ingredients, ...updatedData.ingredients], // Assuming you want to add new ingredients
       editVersion: prevData.editVersion + 1
     }));
     setShowEditModal(false);

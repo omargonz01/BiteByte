@@ -14,8 +14,8 @@ const app = express();
 const upload = multer({ dest: 'uploads/' }); // Temporary storage for uploaded files
 const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
-  // 'https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app',
-  // 'https://bitebyte.onrender.com',
+  'https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app',
+  'https://bitebyte.onrender.com',
   'http://localhost:5173'
 ];
 

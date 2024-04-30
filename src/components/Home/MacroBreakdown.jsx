@@ -61,7 +61,7 @@ const MacroBreakdown = ({ nutrition }) => {
         <CircularProgressbar
           value={Number(caloriesValue)} // Convert string back to number if needed
           text={caloriesValue}
-          maxValue={2000}
+          maxValue={4000}
           styles={progressBarStyles}
         />
         <p className="text-md font-semibold text-center text-gray-700 mt-2 mb-3">
