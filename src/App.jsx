@@ -8,21 +8,29 @@ import DateDisplay from './components/Home/DateDisplay';
 import NutritionResults from './views/NutritionResults';
 import './App.css';
 
+const initialState = {
+  dish: '',
+  imageURL: '',
+  macros: {
+    calories: 0,
+    carbohydrates: 0,
+    protein: 0,
+    fat: 0
+  },
+  originalMacros: {
+    calories: 0,
+    carbohydrates: 0,
+    protein: 0,
+    fat: 0
+  },
+  ingredients: [],
+  editVersion: 0
+};
+
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [nutritionData, setNutritionData] = useState({
-    dish: '',
-    imageURL: '',
-    macros: {
-      calories: 0,
-      carbohydrates: 0,
-      protein: 0,
-      fat: 0
-    },
-    ingredients: [],
-    editVersion: 0 
-  });
+  const [nutritionData, setNutritionData] = useState(initialState);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowWelcome(false), 3000);
@@ -54,19 +62,36 @@ function App() {
   };
 
   const handleEditComplete = (updatedData) => {
-    setNutritionData(prevData => ({
-      ...prevData,
-      dish: updatedData.mealName,
-      imageURL: updatedData.imageURL,
-      macros: {
-        calories: prevData.macros.calories + parseFloat(updatedData.totalCalories),
-        carbohydrates: prevData.macros.carbohydrates + parseFloat(updatedData.totalCarbs),
-        protein: prevData.macros.protein + parseFloat(updatedData.totalProteins),
-        fat: prevData.macros.fat + parseFloat(updatedData.totalFat)
-      },
-      ingredients: [...prevData.ingredients, ...updatedData.ingredients], // Assuming you want to add new ingredients
-      editVersion: prevData.editVersion + 1
-    }));
+    setNutritionData(prevData => {
+      const newMacros = {
+        calories: parseFloat(updatedData.totalCalories) || 0,
+        carbohydrates: parseFloat(updatedData.totalCarbs) || 0,
+        protein: parseFloat(updatedData.totalProteins) || 0,
+        fat: parseFloat(updatedData.totalFat) || 0
+      };
+  
+      const macroDifferences = {
+        calories: newMacros.calories - ((prevData.macros?.calories || 0) - (prevData.originalMacros?.calories || 0)),
+        carbohydrates: newMacros.carbohydrates - ((prevData.macros?.carbohydrates || 0) - (prevData.originalMacros?.carbohydrates || 0)),
+        protein: newMacros.protein - ((prevData.macros?.protein || 0) - (prevData.originalMacros?.protein || 0)),
+        fat: newMacros.fat - ((prevData.macros?.fat || 0) - (prevData.originalMacros?.fat || 0))
+      };
+  
+      return {
+        ...prevData,
+        dish: updatedData.mealName,
+        imageURL: updatedData.imageURL,
+        macros: {
+          calories: (prevData.macros?.calories || 0) + macroDifferences.calories,
+          carbohydrates: (prevData.macros?.carbohydrates || 0) + macroDifferences.carbohydrates,
+          protein: (prevData.macros?.protein || 0) + macroDifferences.protein,
+          fat: (prevData.macros?.fat || 0) + macroDifferences.fat
+        },
+        originalMacros: newMacros,  // Update original macros to the new entry
+        ingredients: updatedData.ingredients,
+        editVersion: prevData.editVersion + 1
+      };
+    });
     setShowEditModal(false);
   };
 

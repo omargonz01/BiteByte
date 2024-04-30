@@ -4,9 +4,9 @@ import "react-circular-progressbar/dist/styles.css";
 import "./MacroBreakdown.css";
 
 const dailyValues = {
-  carbs: 325,
-  protein: 200,
-  fat: 78,
+  carbs: 1000,
+  protein: 1000,
+  fat: 1000,
 };
 
 // fixed to ensure exceeding totals does not break the UI
