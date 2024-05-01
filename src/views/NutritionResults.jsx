@@ -48,6 +48,7 @@ const NutritionResults = ({ nutritionData, onEditComplete }) => {
 
 const handleSave = () => {
   const updatedNutritionData = {
+      ...nutritionData, // Existing data
       mealName: details.mealName,
       imageURL: details.imageURL,
       totalCalories: details.totalCalories,
@@ -59,18 +60,16 @@ const handleSave = () => {
   };
 
   console.log('Updating nutrition data:', updatedNutritionData); // Debugging line to check the data
-  onEditComplete(updatedNutritionData);
-  setIsEditing(false);
+  onEditComplete(updatedNutritionData); // Send updates to App
+  setIsEditing(false); // End editing mode
 };
 
 return (
   <div className="nutrition-results">
     <div className="meal-header">
       <h2>{details.mealName}</h2>
-      <p>Last updated: {details.date}</p>
-      {isEditing ? (
-        <button onClick={handleSave}>Save</button>
-      ) : (
+      <p>{details.date}</p>
+      {!isEditing && (
         <button onClick={() => setIsEditing(true)}>Edit</button>
       )}
     </div>
@@ -96,6 +95,7 @@ return (
             <label htmlFor="totalFat">Fats</label>
             <input type="number" id="totalFat" name="totalFat" value={details.totalFat} onChange={handleNutritionChange} />
           </div>
+          <button className="save-button" onClick={handleSave}>Save</button>
         </>
       ) : (
         <>
