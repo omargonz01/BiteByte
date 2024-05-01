@@ -70,24 +70,13 @@ function App() {
         fat: parseFloat(updatedData.totalFat) || 0
       };
   
-      const macroDifferences = {
-        calories: newMacros.calories - ((prevData.macros?.calories || 0) - (prevData.originalMacros?.calories || 0)),
-        carbohydrates: newMacros.carbohydrates - ((prevData.macros?.carbohydrates || 0) - (prevData.originalMacros?.carbohydrates || 0)),
-        protein: newMacros.protein - ((prevData.macros?.protein || 0) - (prevData.originalMacros?.protein || 0)),
-        fat: newMacros.fat - ((prevData.macros?.fat || 0) - (prevData.originalMacros?.fat || 0))
-      };
-  
+      // Directly update without calculating differences
       return {
         ...prevData,
         dish: updatedData.mealName,
         imageURL: updatedData.imageURL,
-        macros: {
-          calories: (prevData.macros?.calories || 0) + macroDifferences.calories,
-          carbohydrates: (prevData.macros?.carbohydrates || 0) + macroDifferences.carbohydrates,
-          protein: (prevData.macros?.protein || 0) + macroDifferences.protein,
-          fat: (prevData.macros?.fat || 0) + macroDifferences.fat
-        },
-        originalMacros: newMacros,  // Update original macros to the new entry
+        macros: newMacros, // Update directly with new values
+        originalMacros: newMacros, // Keep sync between original and current
         ingredients: updatedData.ingredients,
         editVersion: prevData.editVersion + 1
       };
