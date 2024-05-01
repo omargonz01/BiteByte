@@ -6,6 +6,7 @@ import bitebyteSpinner from '../../assets/bite1.gif';
 function ImageUpload({ onImageSelected, onNutritionData }) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleImageChange = async (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -18,6 +19,7 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
 
     const processImage = async (file) => {
         setIsLoading(true);
+        setErrorMessage('');
         try {
             const nutritionData = await uploadImageAndGetNutrition(file);
             console.log("Nutrition data received in ImageUpload:", nutritionData); // Log received data
@@ -25,6 +27,7 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
             onImageSelected && onImageSelected(file);
         } catch (error) {
             console.error('Error fetching nutrition data:', error);
+            setErrorMessage(error.message || 'Failed to process image. Please try again.'); // Display backend or connection error
         } finally {
             setIsLoading(false);
             setSelectedImage(null); // Optionally clear the selected image
@@ -42,6 +45,7 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
             ) : selectedImage && (
                 <img src={URL.createObjectURL(selectedImage)} alt="Preview" style={{ width: '100px', height: '100px' }} />
             )}
+            {errorMessage && <div style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</div>}
             {/* When not loading, show the selected image */}
         </div>
     );

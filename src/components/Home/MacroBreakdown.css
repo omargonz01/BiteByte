@@ -1,3 +1,34 @@
 .custom-progress-bar {
   background-color: #5A6D57; 
 }
+/* MacroBreakdown.css */
+.text-neutral-800 {
+  color: #4b5563; /* Adjust the color to match the design */
+}
+
+.font-normal {
+  font-weight: 400; /* Adjust the font weight if needed */
+}
+
+.text-md {
+  font-size: 1.25rem; /* Medium text size */
+}
+
+.font-bold {
+  font-weight: 700; /* Bold text */
+}
+
+.text-sm {
+  font-size: 0.875rem; /* Small text size */
+}
+
+.text-center {
+  text-align: center; /* Center the text */
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem; /* Small y-axis padding */
+}
+
+/* Add other CSS properties as needed to match the design */

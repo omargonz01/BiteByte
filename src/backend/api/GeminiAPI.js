@@ -1,16 +1,20 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { parseNutritionalData, cleanJsonText, isValidJson } from '../service/parseNutritionalData.js';
+import {
+  parseNutritionalData,
+  cleanJsonText,
+  isValidJson,
+} from "../service/parseNutritionalData.js";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-
-  async function analyzeImage(imagePath) {
-    const imageData = { inlineData: { data: imagePath, mimeType: 'image/jpeg' } };
-    const prompt = `
-    Analyze the provided image and accurately identify each major food item. 
+async function analyzeImage(imagePath) {
+  const imageData = { inlineData: { data: imagePath, mimeType: "image/jpeg" } };
+  const prompt = `
+    First, determine if the image contains food it might not include food so please make sure if it is not, clearly state 'No food detected.'
+    If food is detected, analyze the provided image and accurately identify each major food item. 
     Use visual recognition to estimate portion sizes, comparing them to known objects in the image or by referencing common serving sizes. 
     Output the nutritional information in a structured JSON format, based closely on standard nutritional databases. 
     Ensure all numerical values for quantity and measures are provided in decimals without unit descriptions (e.g., '100', '50.5', not '100g', '1/2 cup'). 
@@ -47,20 +51,30 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     
     Focus on the accuracy of macronutrient identification and quantification. Adhere to the nutritional values for these ingredients as known from reliable sources and databases. Avoid assumptions and overestimations; if in doubt, prioritize user interaction for clarification.
     `;
-    
-    const result = await genAI.getGenerativeModel({ model: "gemini-pro-vision" }).generateContent([prompt, imageData]);
+
+  try {
+    const result = await genAI
+      .getGenerativeModel({ model: "gemini-pro-vision" })
+      .generateContent([prompt, imageData]);
     const response = await result.response;
     const rawText = await response.text();
     const cleanText = cleanJsonText(rawText);
 
     if (!isValidJson(cleanText)) {
-        throw new Error("Invalid JSON returned from Gemini API");
+      throw new Error("Invalid JSON returned from Gemini API");
+    }
+
+    if (cleanText.includes("No food detected")) {
+      return { error: "No food detected. Please upload an image of food." };
     }
 
     const jsonData = JSON.parse(cleanText);
     const structuredData = parseNutritionalData(jsonData);
-
     return structuredData;
+  } catch (error) {
+    console.error("Error in analyzeImage:", error);
+    throw error; // or respond with a custom error message to the client
+  }
 }
 
 async function analyzeText(description) {
@@ -74,23 +88,24 @@ async function analyzeText(description) {
   `;
 
   try {
-    const result = await genAI.getGenerativeModel({ model: "gemini-pro" }).generateContent(prompt);
+    const result = await genAI
+      .getGenerativeModel({ model: "gemini-pro" })
+      .generateContent(prompt);
     const response = await result.response;
     const rawText = await response.text();
     // Return raw text or wrap it in a JSON object if necessary
-    return { rawText };  // Wrapping in an object to ensure it's handled as JSON
+    return { rawText }; // Wrapping in an object to ensure it's handled as JSON
   } catch (error) {
-    console.error('Error retrieving data from API:', error);
+    console.error("Error retrieving data from API:", error);
     throw new Error("API failed to process the request");
   }
 }
-
 
 export { analyzeImage, analyzeText };
 
 // async function analyzeText(description) {
 //   const prompt = `
-//   Given a detailed description of a meal, provide a structured JSON output of estimated nutritional values. 
+//   Given a detailed description of a meal, provide a structured JSON output of estimated nutritional values.
 //   Description: "${description}"
 //   Output the nutritional information based closely on standard nutritional databases, including details like:
 //   - Total calories

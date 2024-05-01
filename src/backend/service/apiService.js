@@ -18,6 +18,9 @@ const uploadImageAndGetNutrition = async (imageFile) => {
       },
     });
     console.log(response.data); // Log the response data in the console
+    if (response.data.error) {  // Check if backend sent an error like "No food detected"
+      throw new Error(response.data.error);
+    }
     return response.data; // This should contain the nutritional data
   } catch (error) {
     console.error('Error uploading image:', error);
