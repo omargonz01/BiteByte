@@ -114,8 +114,16 @@ function Nav({ onNutritionDataReceived }) {
 
       {showAddFoodNav && <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>}
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
-      {showCamera && <Camera onCapture={handleImageCapture} onClear={handleImageClear} onClose={() => setShowCamera(false)} />}
-      {capturedImage && <img src={URL.createObjectURL(capturedImage)} alt="Captured" />}
+      {showCamera && <Camera 
+          onCapture={handleImageCapture} 
+          onClear={handleImageClear} 
+          onClose={() => setShowCamera(false)} 
+          onNutritionDataReceived={onNutritionDataReceived} // Assuming you need to use this here
+        />}
+        {capturedImage && (
+          <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
+          // Optionally handle data when displaying captured image
+        )}
       <Modal open={showImageUploadModal} onClose={handleCloseModal} aria-labelledby="image-upload-modal" aria-describedby="Modal for image upload">
         <div className="modal-content p-4 relative">
           <ImageUpload onImageSelected={(file) => {

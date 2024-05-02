@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { Snackbar, Alert } from '@mui/material'; 
 import Nav from './components/Nav/Nav';
 import Welcome from './views/Welcome';
 import Header from './components/Home/Header';
@@ -31,6 +32,7 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [nutritionData, setNutritionData] = useState(initialState);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' }); // Added state for snackbar
 
   useEffect(() => {
     const timer = setTimeout(() => setShowWelcome(false), 3000);
@@ -38,6 +40,7 @@ function App() {
   }, []);
 
   const handleNutritionData = (data) => {
+    console.log("Received nutrition data:", data); // Add this log
     if (data && data.success && data.finalNutritionData) {
       setNutritionData({
         dish: data.finalNutritionData.dish,
@@ -52,13 +55,20 @@ function App() {
         editVersion: nutritionData.editVersion + 1 
       });
       setShowEditModal(true);
+      console.log("Nutrition data set in state:", nutritionData); // Log after state update
     } else {
-      console.error("Received data is missing 'finalNutritionData' or 'macros'");
+      // Log an error or handle the case where data is missing
+      console.log("Data missing or invalid:", data);
+      setSnackbar({
+        open: true,
+        message: "No food detected or data is missing.",
+        severity: 'error'
+      });
     }
   };
 
-  const handleCloseModal = () => {
-    setShowEditModal(false);
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
   };
 
   const handleEditComplete = (updatedData) => {
@@ -84,6 +94,22 @@ function App() {
     setShowEditModal(false);
   };
 
+  const handleSubmit = (formData) => {
+    fetch('/analyze-image', { method: 'POST', body: formData })
+      .then(response => response.json())
+      .then(data => {
+          if (!data.success) {
+              setSnackbar({ open: true, message: data.error, severity: 'error' });
+          } else {
+              handleNutritionData(data);
+          }
+      })
+      .catch(error => {
+          setSnackbar({ open: true, message: 'Failed to connect to the server.', severity: 'error' });
+      });
+  };
+  
+
   return (
     <BrowserRouter>
       <div className="app">
@@ -94,13 +120,22 @@ function App() {
             <Header />
             <DateDisplay />
             <main className="main-content">
-            <MacroBreakdown nutrition={nutritionData.macros} />
+              <MacroBreakdown nutrition={nutritionData.macros} />
               {showEditModal && (
                 <NutritionResults
                   nutritionData={nutritionData}
                   onEditComplete={handleEditComplete}
                 />
               )}
+              <Snackbar
+                open={snackbar.open}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+              >
+                <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+                  {snackbar.message}
+                </Alert>
+              </Snackbar>
             </main>
             <Nav onNutritionDataReceived={handleNutritionData} />
           </>

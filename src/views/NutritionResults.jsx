@@ -16,6 +16,7 @@ const NutritionResults = ({ nutritionData, onEditComplete }) => {
   const [isEditing, setIsEditing] = useState(true); // Start in editing mode
 
   useEffect(() => {
+    console.log('NutritionData updated:', nutritionData);
     if (nutritionData) {
       setDetails({
         mealName: nutritionData.dish || 'N/A',

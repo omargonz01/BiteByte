@@ -14,8 +14,8 @@ const app = express();
 const upload = multer({ dest: 'uploads/' }); // Temporary storage for uploaded files
 const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
-  'https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app',
-  'https://bitebyte.onrender.com',
+  // 'https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app',
+  // 'https://bitebyte.onrender.com',
   'http://localhost:5173'
 ];
 
@@ -44,11 +44,8 @@ app.get('/', (req, res) => {
 
 
 app.post('/analyze-image', upload.single('image'), async (req, res) => {
-  let responseToSend = { success: false, error: 'An error occurred' };
-
   if (!req.file) {
-    responseToSend.error = 'No file uploaded.';
-    return res.status(400).json(responseToSend);
+    return res.status(400).json({ success: false, error: 'No file uploaded.' });
   }
 
   try {
@@ -71,11 +68,10 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
       action: 'read',
       expires: '03-09-2491' // Far future date
     });
-    const imageURL = signedUrls[0]; // This is the public URL to access the uploaded file
+    const imageURL = signedUrls[0];
+    const imageBase64 = Buffer.from(fs.readFileSync(filePath)).toString('base64');
 
-    const imageBase64 = Buffer.from(fs.readFileSync(req.file.path)).toString('base64');
     const structuredData = await analyzeImage(imageBase64);
-
     if (!structuredData || !Array.isArray(structuredData.ingredients)) {
       throw new Error("Missing or invalid structured data from image analysis.");
     }
@@ -136,9 +132,8 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error:", error);
-    responseToSend.error = `Server error processing image: ${error.message}`;
-    return res.status(500).json(responseToSend);
+    console.error("User-friendly error message:", error.message);
+    res.status(500).json({ success: false, error: error.message });
   } finally {
     if (req.file && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
