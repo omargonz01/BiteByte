@@ -27,7 +27,7 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
             onImageSelected && onImageSelected(file);
         } catch (error) {
             console.error('Error fetching nutrition data:', error);
-            setErrorMessage(error.message || 'Failed to process image. Please try again.'); // Display backend or connection error
+            setErrorMessage('Failed to process image. Please try again.'); // Display backend or connection error
         } finally {
             setIsLoading(false);
             setSelectedImage(null); // Optionally clear the selected image

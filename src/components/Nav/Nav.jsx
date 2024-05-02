@@ -18,6 +18,7 @@ function Nav({ onNutritionDataReceived }) {
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' }); // Added state for snackbar
 
   
   //  handle the "plus" button click
@@ -44,7 +45,7 @@ function Nav({ onNutritionDataReceived }) {
         console.error('Failed to receive nutrition data.');
       }
     } catch (error) {
-      console.error('Error fetching nutrition data:', error);
+      console.error('Error fetching nutrition data. Please upload an image of food');
     } finally {
       setIsLoading(false); // Set loading to false after the process is complete
     }
@@ -88,6 +89,22 @@ function Nav({ onNutritionDataReceived }) {
     console.log(`${page} clicked`);
   };
 
+  const handleSubmit = (formData) => {
+    fetch('/analyze-image', { method: 'POST', body: formData })
+      .then(response => response.json())
+      .then(data => {
+          if (!data.success) {
+              setSnackbar({ open: true, message: data.error, severity: 'error' });
+          } else {
+              handleNutritionData(data);
+          }
+      })
+      .catch(error => {
+          setSnackbar({ open: true, message: 'Failed to connect to the server.', severity: 'error' });
+      });
+  };
+  
+
   return (
     <>
       <nav className="nav w-full fixed bottom-0 left-0 z-10">
@@ -119,6 +136,7 @@ function Nav({ onNutritionDataReceived }) {
           onClear={handleImageClear} 
           onClose={() => setShowCamera(false)} 
           onNutritionDataReceived={onNutritionDataReceived} // Assuming you need to use this here
+          handleSubmit={handleSubmit}
         />}
         {capturedImage && (
           <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
@@ -129,7 +147,7 @@ function Nav({ onNutritionDataReceived }) {
           <ImageUpload onImageSelected={(file) => {
             console.log('Image selected:', file);
             setShowImageUploadModal(false);
-          }} onNutritionData={onNutritionDataReceived} />
+          }} onNutritionData={onNutritionDataReceived} handleSubmit={handleSubmit} />
           <button className="absolute right-0 p-1 bg-white rounded-full shadow-lg" onClick={() => setShowImageUploadModal(false)}>
             <CloseIcon fontSize="large" />
           </button>

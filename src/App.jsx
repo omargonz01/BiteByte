@@ -94,22 +94,6 @@ function App() {
     setShowEditModal(false);
   };
 
-  const handleSubmit = (formData) => {
-    fetch('/analyze-image', { method: 'POST', body: formData })
-      .then(response => response.json())
-      .then(data => {
-          if (!data.success) {
-              setSnackbar({ open: true, message: data.error, severity: 'error' });
-          } else {
-              handleNutritionData(data);
-          }
-      })
-      .catch(error => {
-          setSnackbar({ open: true, message: 'Failed to connect to the server.', severity: 'error' });
-      });
-  };
-  
-
   return (
     <BrowserRouter>
       <div className="app">
