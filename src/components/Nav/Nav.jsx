@@ -131,13 +131,23 @@ function Nav({ onNutritionDataReceived }) {
 
       {showAddFoodNav && <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>}
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
-      {showCamera && <Camera 
-          onCapture={handleImageCapture} 
-          onClear={handleImageClear} 
-          onClose={() => setShowCamera(false)} 
-          onNutritionDataReceived={onNutritionDataReceived} // Assuming you need to use this here
-          handleSubmit={handleSubmit}
-        />}
+      {showCamera && (
+          <div className="camera-container">
+            <Camera
+              onCapture={handleImageCapture}
+              onClear={handleImageClear}
+              onClose={() => setShowCamera(false)}
+              onNutritionDataReceived={onNutritionDataReceived}
+              handleSubmit={handleSubmit}
+            />
+            <div className="camera-controls">
+              <button onClick={handleImageCapture}>Capture</button>
+              <button onClick={handleImageClear}>Clear</button>
+              <button onClick={() => setUseFrontCamera(prev => !prev)}>Toggle Camera</button>
+              <button onClick={() => setShowCamera(false)}>Close</button>
+            </div>
+          </div>
+        )}
         {capturedImage && (
           <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
           // Optionally handle data when displaying captured image
