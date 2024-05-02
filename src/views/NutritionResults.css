@@ -78,7 +78,7 @@
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #5cb85c;
+  background-color: #5A6D57;
   color: white;
   border: none;
   border-radius: 5px;
@@ -86,5 +86,5 @@
 }
 
 .save-button:hover {
-  background-color: #4cae4c;
+  background-color: #5A6D57;
 }

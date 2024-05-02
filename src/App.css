@@ -9,7 +9,7 @@ body, #root {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: visible;
+  overflow: auto; /* Ensures scrollbars appear when necessary */
 }
 
 /* General app styling */
@@ -21,7 +21,9 @@ body, #root {
   max-width: 1280px;
   margin: auto;
   min-height: 100vh;
+  padding-bottom: 60px; /* Increase padding to at least the height of the footer */
 }
+
 
 /* Fade-out animation */
 .fade-out {
@@ -102,5 +104,9 @@ button {
 
   .macro-item {
     flex-basis: 100%; /* Stack vertically on smaller screens */
+  }
+
+  .app {
+    padding-bottom: 100px; /* Adjust based on the actual height of your footer/nav bar on smaller screens */
   }
 }
