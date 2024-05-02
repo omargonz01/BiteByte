@@ -72,12 +72,13 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
       }
     } catch (error) {
       console.error('Error fetching nutrition data:', error);
+      // Implement user-friendly error feedback here, e.g., using a snackbar
+      alert("Failed to fetch nutrition data. Please upload an image of a food" ); 
     } finally {
-      setIsProcessing(false); // Stop the spinner after processing is complete
-      onClose(); // Call the onClose function passed as a prop to close the camera view
+      setIsProcessing(false);
+      onClose();
     }
 };
-
 
   const handleClear = () => {
     if (stream) {
