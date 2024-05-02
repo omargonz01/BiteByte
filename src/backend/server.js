@@ -14,8 +14,8 @@ const app = express();
 const upload = multer({ dest: 'uploads/' }); // Temporary storage for uploaded files
 const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
-  'https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app',
-  'https://bitebyte.onrender.com',
+  // 'https://6629adcaaedc0a268c763f6f--ornate-pavlova-d0d03d.netlify.app',
+  // 'https://bitebyte.onrender.com',
   'http://localhost:5173'
 ];
 
@@ -103,7 +103,6 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     const combinedGeminiEdamamIngredientsNutrition = combineNutritionData(averagedTotalNutrition, sumAveragedIngredientsNutrition);
     const finalNutritionData = {
       dish: structuredData.dish, // The name of the dish
-      // quantity: structuredData.quantity,
       imageURL: imageURL,
       macros: formatNutritionValues(combinedGeminiEdamamIngredientsNutrition), // The formatted macro values
       ingredients: averagedIngredientsNutrition // The detailed nutrition per ingredient

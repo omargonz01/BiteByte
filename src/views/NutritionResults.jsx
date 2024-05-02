@@ -31,7 +31,6 @@ const NutritionResults = ({ nutritionData, onEditComplete }) => {
           carbs: ing.carbohydrates || 0,
           fat: ing.fat || 0,
           protein: ing.protein || 0,
-          weight: ing.quantity ? `${ing.quantity}${ing.unit || 'g'}` : 'N/A'
         })),
       });
     }
@@ -106,6 +105,19 @@ return (
         </>
       )}
     </div>
+    {/* Display Ingredients List */}
+      <div className="ingredients-list">
+        <h3>Ingredients</h3>
+        <ul>
+          {details.ingredients.map((ingredient, index) => (
+            <li key={index} className="ingredient-item">
+              <strong>{ingredient.name}</strong>
+              <div><strong>Calories:</strong> {ingredient.calories} kcal</div>
+              <div><strong>Carbs:</strong> {ingredient.carbs} g, <strong>Protein:</strong> {ingredient.protein} g, <strong>Fat:</strong> {ingredient.fat} g</div>
+            </li>
+          ))}
+        </ul>
+      </div>
   </div>
 );
 };
