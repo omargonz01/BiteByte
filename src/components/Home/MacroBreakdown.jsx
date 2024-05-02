@@ -17,7 +17,7 @@ const MacroBreakdown = ({ nutrition }) => {
       <div className="text-xl text-gray-600">CALS EATEN</div>
 
       <div className="text-gray-600 text-md font-semibold mt-20 mb-5">
-        MACRO BREAKDOWN V
+        MACRO BREAKDOWN 
       </div>
 
       <div className="bg-white rounded-lg shadow p-2 flex justify-around w-80">

@@ -18,31 +18,16 @@ const uploadImageAndGetNutrition = async (imageFile) => {
       },
     });
     console.log(response.data); // Log the response data in the console
-    if (response.data.error) {  // Check if backend sent an error like "No food detected"
+    if (response.data.error) { 
       throw new Error(response.data.error);
     }
-    return response.data; // This should contain the nutritional data
+    return response.data; 
   } catch (error) {
     console.error('Error uploading image:', error);
-    throw error; // You may want to handle this error differently
+    throw error; 
   }
 };
 
-const analyzeTextAndGetNutrition = async (textDescription) => {
-  try {
-      const response = await axios.post(`${API_URL}/analyze-text`, {
-          description: textDescription
-      }, {
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
-      console.log(response.data);
-      return response.data;
-  } catch (error) {
-      console.error('Error analyzing text:', error);
-      throw error;
-  }
-};
 
-export default uploadImageAndGetNutrition; analyzeTextAndGetNutrition;
+
+export default uploadImageAndGetNutrition;

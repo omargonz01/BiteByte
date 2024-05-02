@@ -77,53 +77,6 @@ async function analyzeImage(imagePath) {
   }
 }
 
-async function analyzeText(description) {
-  const prompt = `
-  Given a detailed description of a meal, provide a structured JSON output of estimated nutritional values. 
-  Description: "${description}"
-  Output the nutritional information based closely on standard nutritional databases, including details like:
-  - Total calories
-  - Macronutrients breakdown (fats, carbohydrates, protein)
-  Ensure accuracy in estimates and use reliable sources for nutritional values.
-  `;
 
-  try {
-    const result = await genAI
-      .getGenerativeModel({ model: "gemini-pro" })
-      .generateContent(prompt);
-    const response = await result.response;
-    const rawText = await response.text();
-    // Return raw text or wrap it in a JSON object if necessary
-    return { rawText }; // Wrapping in an object to ensure it's handled as JSON
-  } catch (error) {
-    console.error("Error retrieving data from API:", error);
-    throw new Error("API failed to process the request");
-  }
-}
 
-export { analyzeImage, analyzeText };
-
-// async function analyzeText(description) {
-//   const prompt = `
-//   Given a detailed description of a meal, provide a structured JSON output of estimated nutritional values.
-//   Description: "${description}"
-//   Output the nutritional information based closely on standard nutritional databases, including details like:
-//   - Total calories
-//   - Macronutrients breakdown (fats, carbohydrates, protein)
-//   Ensure accuracy in estimates and use reliable sources for nutritional values.
-//   `;
-
-//   const result = await genAI.getGenerativeModel({ model: "gemini-pro" }).generateContent(prompt);
-//   const response = await result.response;
-//   const rawText = await response.text();
-//   const cleanText = cleanJsonText(rawText);
-
-//   if (!isValidJson(cleanText)) {
-//       throw new Error("Invalid JSON returned from Gemini API");
-//   }
-
-//   const jsonData = JSON.parse(cleanText);
-//   const structuredData = parseNutritionalData(jsonData);
-
-//   return structuredData;
-// }
+export { analyzeImage };

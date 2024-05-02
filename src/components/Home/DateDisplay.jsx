@@ -3,7 +3,6 @@ import './DateDisplay.css';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'; 
 
 const DateDisplay = () => {
   
