@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import uploadImageAndGetNutrition from '../../backend/service/apiService';
 import bitebyteSpinner from '../../assets/bite1.gif';
-
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 
 const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {

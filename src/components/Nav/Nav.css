@@ -87,10 +87,19 @@ a:hover {
 }
 
 .modal-content {
-  display: flex; /* Use flexbox for positioning */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100vh; /* Take full viewport height */
-  outline: 0; /* Remove the focus outline */
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background-color: #FEFDF8; 
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90vw;
+  max-width: 500px;
+  height: auto;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.5s ease-out;
 }
 
