@@ -45,7 +45,7 @@ function Nav({ onNutritionDataReceived }) {
         console.error('Failed to receive nutrition data.');
       }
     } catch (error) {
-      console.error('Error fetching nutrition data. Please upload an image of food');
+      console.error('Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again');
     } finally {
       setIsLoading(false); // Set loading to false after the process is complete
     }
@@ -144,11 +144,18 @@ function Nav({ onNutritionDataReceived }) {
         )}
       <Modal open={showImageUploadModal} onClose={handleCloseModal} aria-labelledby="image-upload-modal" aria-describedby="Modal for image upload">
         <div className="modal-content p-4 relative">
-          <ImageUpload onImageSelected={(file) => {
+          <ImageUpload 
+          onImageSelected={(file) => {
             console.log('Image selected:', file);
             setShowImageUploadModal(false);
-          }} onNutritionData={onNutritionDataReceived} handleSubmit={handleSubmit} />
-          <button className="absolute right-0 p-1 bg-white rounded-full shadow-lg" onClick={() => setShowImageUploadModal(false)}>
+          }} 
+          onNutritionData={onNutritionDataReceived} 
+          handleSubmit={handleSubmit} 
+          />
+          <button 
+          className="absolute right-0 p-1 bg-white rounded-full shadow-lg" 
+          onClick={() => setShowImageUploadModal(false)}
+          >
             <CloseIcon fontSize="large" />
           </button>
         </div>
