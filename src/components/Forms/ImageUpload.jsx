@@ -12,14 +12,17 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             setSelectedImage(file);
-
+    
             await processImage(file);
         }
     };
-
+    
     const processImage = async (file) => {
         setIsLoading(true);
         setErrorMessage('');
+        const formData = new FormData();
+        formData.append('image', file); // This needs to be created regardless of the try block
+    
         try {
             const nutritionData = await uploadImageAndGetNutrition(file);
             console.log("Nutrition data received in ImageUpload:", nutritionData); // Log received data
@@ -27,12 +30,14 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
             onImageSelected && onImageSelected(file);
         } catch (error) {
             console.error('Error fetching nutrition data:', error);
-            setErrorMessage('Failed to process image. Please try again.'); // Display backend or connection error
+            setErrorMessage('Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again'); // Display backend or connection error
+            handleSubmit(formData); // Correctly pass formData to handleSubmit here
         } finally {
             setIsLoading(false);
             setSelectedImage(null); // Optionally clear the selected image
         }
     };
+    
 
     return (
         <div>
