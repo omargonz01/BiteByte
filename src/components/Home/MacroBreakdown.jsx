@@ -20,7 +20,7 @@ const MacroBreakdown = ({ nutrition }) => {
         MACRO BREAKDOWN 
       </div>
 
-      <div className="bg-white rounded-lg shadow p-2 flex justify-around w-80">
+      <div className=" bg-white rounded-lg shadow p-2 flex justify-around w-80">
         <MacroCounter
           label="Carbs"
           value={nutrition.carbohydrates ? nutrition.carbohydrates : 0}

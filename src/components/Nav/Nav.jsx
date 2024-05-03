@@ -163,7 +163,7 @@ function Nav({ onNutritionDataReceived }) {
           handleSubmit={handleSubmit} 
           />
           <button 
-          className="absolute right-2 top-2 p-1 bg-white rounded-full shadow-lg" 
+          className="absolute right-3 top-2 p-1 bg-white rounded-full shadow-lg" 
           onClick={() => setShowImageUploadModal(false)}
           >
             <CloseIcon fontSize="medium" />
