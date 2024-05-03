@@ -166,7 +166,7 @@ function Nav({ onNutritionDataReceived }) {
           className="absolute right-2 top-2 p-1 bg-white rounded-full shadow-lg" 
           onClick={() => setShowImageUploadModal(false)}
           >
-            <CloseIcon fontSize="large" />
+            <CloseIcon fontSize="medium" />
           </button>
         </div>
       </Modal>

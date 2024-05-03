@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import uploadImageAndGetNutrition from '../../backend/service/apiService';
 import bitebyteSpinner from '../../assets/bite1.gif';
-
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 function ImageUpload({ onImageSelected, onNutritionData }) {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -12,7 +12,6 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             setSelectedImage(file);
-    
             await processImage(file);
         }
     };
@@ -21,38 +20,63 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
         setIsLoading(true);
         setErrorMessage('');
         const formData = new FormData();
-        formData.append('image', file); // This needs to be created regardless of the try block
+        formData.append('image', file);
     
         try {
             const nutritionData = await uploadImageAndGetNutrition(file);
-            console.log("Nutrition data received in ImageUpload:", nutritionData); // Log received data
+            console.log("Nutrition data received in ImageUpload:", nutritionData);
             onNutritionData(nutritionData);
             onImageSelected && onImageSelected(file);
         } catch (error) {
             console.error('Error fetching nutrition data:', error);
-            setErrorMessage('Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again'); // Display backend or connection error
-            handleSubmit(formData); // Correctly pass formData to handleSubmit here
+            setErrorMessage(
+                <>
+                  <strong>Error</strong>
+                  <br />
+                  <span>Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again</span>
+                </>
+              );
+            handleSubmit(formData); 
         } finally {
             setIsLoading(false);
-            setSelectedImage(null); // Optionally clear the selected image
+            setSelectedImage(null);
         }
     };
-    
 
     return (
         <div>
-            <input type="file" accept="image/*" onChange={handleImageChange} disabled={isLoading} />
-            {isLoading ? (
-                // Show spinner when image is being processed
-                <div style={{ width: '100px', height: '100px', position: 'relative' }}>
-                    <img src={bitebyteSpinner} alt="Loading..." style={{ width: '100%', height: '100%' }} />
-                </div>
-            ) : selectedImage && (
-                <img src={URL.createObjectURL(selectedImage)} alt="Preview" style={{ width: '100px', height: '100px' }} />
-            )}
-            {errorMessage && <div style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</div>}
-            {/* When not loading, show the selected image */}
+    <input type="file" accept="image/*" onChange={handleImageChange} disabled={isLoading} />
+    {isLoading ? (
+        <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            height: '100px', 
+            width: '100%' 
+        }}>
+            <img src={bitebyteSpinner} alt="Loading..." style={{ 
+                maxWidth: '100px', 
+                maxHeight: '100px'  
+            }} />
         </div>
+    ) : selectedImage && (
+        <img src={URL.createObjectURL(selectedImage)} alt="Preview" style={{ 
+            width: '100px', 
+            height: '100px' 
+        }} />
+    )}
+    {errorMessage && (
+        <div style={{
+            display: 'flex', 
+            alignItems: 'center', 
+            color: 'red', 
+            marginTop: '10px'
+        }}>
+            <ErrorOutlineOutlinedIcon style={{ marginRight: '8px' }} />
+            <div>{errorMessage}</div>
+        </div>
+    )}
+</div>
     );
 }
 
