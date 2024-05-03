@@ -33,7 +33,7 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
                 <>
                   <strong>Error</strong>
                   <br />
-                  <span>Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again</span>
+                  <span>Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again.</span>
                 </>
               );
             handleSubmit(formData); 
@@ -69,7 +69,7 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
         <div style={{
             display: 'flex', 
             alignItems: 'center', 
-            color: 'red', 
+            color: '#DB4F23', 
             marginTop: '10px'
         }}>
             <ErrorOutlineOutlinedIcon style={{ marginRight: '8px' }} />

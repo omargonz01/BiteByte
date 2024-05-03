@@ -73,7 +73,7 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
     } catch (error) {
       console.error('Error fetching nutrition data:', error);
       // Implement user-friendly error feedback here, e.g., using a snackbar
-      alert("Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again" ); 
+      alert("Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again." ); 
     } finally {
       setIsProcessing(false);
       onClose();
