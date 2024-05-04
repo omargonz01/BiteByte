@@ -40,12 +40,21 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
 
   const handleCapture = () => {
     const video = videoRef.current;
+    if (!video) return;
+  
     const canvas = document.createElement("canvas");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    canvas.getContext("2d").drawImage(video, 0, 0);
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+  
     canvas.toBlob((blob) => {
       handleImageCapture(blob);
+      // Stop the video stream after capturing the image
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        setStream(null);
+      }
     });
   };
 
@@ -67,7 +76,7 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
         onClose(); // Close the camera if the image processing was successful
       } else {
         throw new Error(
-          "Oops! Unable to process the image. Please ensure the image is of food and try again."
+          "Unable to process the image."
         );
       }
     } catch (error) {
@@ -141,9 +150,9 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
             bottom: 0,
             backgroundColor: "#E7EFED",
             display: "flex",
-            flexDirection: "column", // Aligns children (text and spinner) in a column
-            alignItems: "center", // Centers children horizontally
-            justifyContent: "center", // Centers the flex container's contents vertically
+            flexDirection: "column", 
+            alignItems: "center", 
+            justifyContent: "center", 
             zIndex: 2,
           }}
         >
@@ -162,6 +171,8 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
         open={!!error}
         autoHideDuration={null}
         onClose={() => setError("")}
+        anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+        style={{ width: 'auto', maxWidth: '100%' }}
       >
         <Alert
           onClose={() => setError("")}

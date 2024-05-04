@@ -58,6 +58,7 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
                 maxWidth: '100px', 
                 maxHeight: '100px'  
             }} />
+            
         </div>
     ) : selectedImage && (
         <img src={URL.createObjectURL(selectedImage)} alt="Preview" style={{ 
