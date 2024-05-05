@@ -18,7 +18,7 @@ export default defineConfig({
         theme_color: "#000000",
         icons: [
           {
-            src: "/dist/src/assets/appIcon.png",
+            src: "/assets/appIcon.png",
             sizes: "192x192",
             type: "image/png",
           },
