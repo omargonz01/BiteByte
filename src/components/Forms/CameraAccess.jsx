@@ -66,7 +66,7 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
     setIsProcessing(true);
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
-      setStream(null);
+      setStream(null); // Ensure the stream is stopped and set to null
     }
     const imageFile = new File([imageBlob], "capturedImage.jpg", {
       type: "image/jpeg",
@@ -89,17 +89,24 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
       setError(
         "Oops! Unable to process the image. Please ensure the image is of food and try again."
       );
+      // Add logic to reset the camera after setting the error
+      resetCamera();
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const handleClear = () => {
+  const resetCamera = () => {
     if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
+      // Stop each track on the current stream
+      stream.getTracks().forEach(track => track.stop());
     }
-    onClear();
-  };
+    // Optionally set stream to null here if you still need to clear the reference
+    setStream(null);
+  
+    // Call getMedia to reinitialize the camera with the current settings
+    getMedia(useFrontCamera).catch(console.error); // Handle errors appropriately
+  };  
 
   const toggleCamera = () => {
     setUseFrontCamera((prevUseFrontCamera) => !prevUseFrontCamera);
