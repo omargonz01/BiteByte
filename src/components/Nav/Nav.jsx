@@ -133,22 +133,16 @@ function Nav({ onNutritionDataReceived }) {
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
       {showCamera && (
           <div className="camera-container">
-            <Camera
-              onCapture={handleImageCapture}
-              onClear={handleImageClear}
-              onClose={() => setShowCamera(false)}
-              onNutritionDataReceived={onNutritionDataReceived}
-              handleSubmit={handleSubmit}
-            />
-            <div className="camera-controls">
-              <button onClick={handleImageCapture}>Capture</button>
-              <button onClick={handleImageClear}>Clear</button>
-              <button onClick={() => setUseFrontCamera(prev => !prev)}>Toggle Camera</button>
-              <button onClick={() => setShowCamera(false)}>Close</button>
-            </div>
+              <Camera
+                  onCapture={handleImageCapture}
+                  onClear={handleImageClear}
+                  onClose={() => setShowCamera(false)}
+                  onNutritionDataReceived={onNutritionDataReceived}
+                  handleSubmit={handleSubmit}
+              />
           </div>
-        )}
-        {capturedImage && (
+      )}
+      {capturedImage && (
           <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
           // Optionally handle data when displaying captured image
         )}

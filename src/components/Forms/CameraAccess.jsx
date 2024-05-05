@@ -2,6 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { Snackbar, Button, Alert } from "@mui/material";
 import uploadImageAndGetNutrition from "../../backend/service/apiService";
 import bitebyteSpinner from "../../assets/bite1.gif";
+import CameraFrontIcon from '@mui/icons-material/CameraFront';
+import CameraRearIcon from '@mui/icons-material/CameraRear';
+import CloseIcon from '@mui/icons-material/Close';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
   const videoRef = useRef(null);
@@ -62,7 +66,7 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
     setIsProcessing(true);
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
-      setStream(null);
+      setStream(null); // Ensure the stream is stopped and set to null
     }
     const imageFile = new File([imageBlob], "capturedImage.jpg", {
       type: "image/jpeg",
@@ -85,61 +89,43 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
       setError(
         "Oops! Unable to process the image. Please ensure the image is of food and try again."
       );
+      // Add logic to reset the camera after setting the error
+      resetCamera();
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const handleClear = () => {
+  const resetCamera = () => {
     if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
+      // Stop each track on the current stream
+      stream.getTracks().forEach(track => track.stop());
     }
-    onClear();
-  };
+    // Optionally set stream to null here if you still need to clear the reference
+    setStream(null);
+  
+    // Call getMedia to reinitialize the camera with the current settings
+    getMedia(useFrontCamera).catch(console.error); // Handle errors appropriately
+  };  
 
   const toggleCamera = () => {
     setUseFrontCamera((prevUseFrontCamera) => !prevUseFrontCamera);
   };
 
   return (
-    <div className="camera-container" style={{ position: "relative" }}>
+    <div className="camera-container">
       <video ref={videoRef} autoPlay playsInline style={{ width: "100%" }} />
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          padding: "10px",
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-around",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        }}
-      >
-        <button
-          onClick={handleCapture}
-          disabled={isProcessing}
-          style={{ color: "white", fontSize: "16px" }}
-        >
-          {isProcessing ? "Processing..." : "Capture"}
+      <div className="camera-controls">
+        <button onClick={onClose} className="camera-button">
+            <CloseIcon />
         </button>
-        <button
-          onClick={handleClear}
-          disabled={isProcessing}
-          style={{ color: "white", fontSize: "16px" }}
-        >
-          Clear
+        <button onClick={handleCapture} disabled={isProcessing} className="camera-button capture">
+            <PhotoCameraIcon />
         </button>
-        <button
-          onClick={toggleCamera}
-          disabled={isProcessing}
-          style={{ color: "white", fontSize: "16px" }}
-        >
-          {useFrontCamera ? "Use Back Camera" : "Use Front Camera"}
+        <button onClick={toggleCamera} disabled={isProcessing} className="camera-button" aria-label="Toggle Camera">
+            {useFrontCamera ? <CameraRearIcon /> : <CameraFrontIcon />}
         </button>
-        <button onClick={onClose} style={{ color: "white", fontSize: "16px" }}>
-          Close
-        </button>
-      </div>
+     </div>
       {isProcessing && (
         <div
           style={{
@@ -166,35 +152,18 @@ const Camera = ({ onCapture, onClear, onClose, onNutritionDataReceived }) => {
           </div>
         </div>
       )}
-
       <Snackbar
         open={!!error}
-        autoHideDuration={null}
+        autoHideDuration={6000}
         onClose={() => setError("")}
-        anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
-        style={{ width: 'auto', maxWidth: '100%' }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert
-          onClose={() => setError("")}
-          severity="error"
-          action={
-            <Button
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setError("");
-                onClose();
-              }}
-            >
-              Close
-            </Button>
-          }
-        >
+        <Alert onClose={() => setError("")} severity="error">
           {error}
         </Alert>
       </Snackbar>
     </div>
   );
-};
+  };
 
 export default Camera;
