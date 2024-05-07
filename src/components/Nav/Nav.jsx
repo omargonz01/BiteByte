@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Nav.css';
 import { Modal } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -108,26 +109,26 @@ function Nav({ onNutritionDataReceived }) {
   return (
     <>
       <nav className="nav w-full fixed bottom-0 left-0 z-10">
-        <a href="#home" className="nav-item" onClick={() => handleNavClick('Home')}>
-          <HomeOutlinedIcon className="nav-icon"/>
-          <span>Home</span>
-        </a>
-        <a href="#stats" className="nav-item" onClick={() => handleNavClick('Stats')}>
-          <CalendarMonthOutlinedIcon className="nav-icon" />
-          <span>Stats</span>
-        </a>
-        <button className="nav-item" onClick={handlePlusClick}>
-          <AddCircleOutlinedIcon className="nav-icon" sx={{ fontSize: '46px', width: '46px', height: '46px' }} />
-        </button>
-        <a href="#recipes" className="nav-item" onClick={() => handleNavClick('Recipes')}>
-          <FeaturedPlayListOutlinedIcon className="nav-icon text-3xl" />
-          <span>Recipes</span>
-        </a>
-        <a href="#profile" className="nav-item" onClick={() => handleNavClick('Profile')}>
-          <PermIdentityOutlinedIcon className="nav-icon" />
-          <span>Profile</span>
-        </a>
-      </nav>
+      <Link to="/home" className="nav-item" onClick={() => console.log('Home clicked')}>
+        <HomeOutlinedIcon className="nav-icon"/>
+        <span>Home</span>
+      </Link>
+      <Link to="/stats" className="nav-item" onClick={() => console.log('Stats clicked')}>
+        <CalendarMonthOutlinedIcon className="nav-icon" />
+        <span>Stats</span>
+      </Link>
+      <button className="nav-item" onClick={handlePlusClick}>
+        <AddCircleOutlinedIcon className="nav-icon" sx={{ fontSize: '46px', width: '46px', height: '46px' }} />
+      </button>
+      <Link to="/recipes" className="nav-item" onClick={() => console.log('Recipes clicked')}>
+        <FeaturedPlayListOutlinedIcon className="nav-icon text-3xl" />
+        <span>Recipes</span>
+      </Link>
+      <Link to="/profile" className="nav-item" onClick={() => console.log('Profile clicked')}>
+        <PermIdentityOutlinedIcon className="nav-icon" />
+        <span>Profile</span>
+      </Link>
+    </nav>
 
       {showAddFoodNav && <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleCloseAddFoodNav}></div>}
       {showAddFoodNav && <AddFoodNav onClose={handleCloseAddFoodNav} onSelect={handleSelectAction} />}
