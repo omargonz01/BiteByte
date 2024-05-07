@@ -71,9 +71,14 @@ function App() {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  const handleEditComplete = (updatedData) => {
+  const handleEditComplete = (updatedData, resetMacros = false) => {
     setNutritionData(prevData => {
-      const newMacros = {
+      const newMacros = resetMacros ? {
+        calories: 0,
+        carbohydrates: 0,
+        protein: 0,
+        fat: 0
+      } : {
         calories: parseFloat(updatedData.totalCalories) || 0,
         carbohydrates: parseFloat(updatedData.totalCarbs) || 0,
         protein: parseFloat(updatedData.totalProteins) || 0,

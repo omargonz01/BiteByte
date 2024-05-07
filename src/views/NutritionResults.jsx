@@ -64,6 +64,19 @@ const handleSave = () => {
   setIsEditing(false); // End editing mode
 };
 
+const handleClose = () => {
+  onEditComplete({
+    mealName: details.mealName,
+    imageURL: details.imageURL,
+    totalCalories: details.totalCalories,
+    totalCarbs: details.totalCarbs,
+    totalFat: details.totalFat,
+    totalProteins: details.totalProteins,
+    ingredients: details.ingredients
+  }, true); // true to reset macros to 0
+  setIsEditing(false);
+};
+
 return (
   <div className="nutrition-results">
     <div className="meal-header">
@@ -96,6 +109,7 @@ return (
             <input type="number" id="totalFat" name="totalFat" value={details.totalFat} onChange={handleNutritionChange} />
           </div>
           <button className="save-button" onClick={handleSave}>Save</button>
+          <button onClick={handleClose} className="close-button">Cancel</button>
         </>
       ) : (
         <>
