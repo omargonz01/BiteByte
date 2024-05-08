@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material'; 
 import Nav from './components/Nav/Nav';
 import Welcome from './views/Welcome';
@@ -7,6 +7,11 @@ import Header from './components/Home/Header';
 import MacroBreakdown from './components/Home/MacroBreakdown';
 import DateDisplay from './components/Home/DateDisplay';
 import NutritionResults from './views/NutritionResults';
+import Stats from './views/Stats'; 
+import Recipes from './views/Recipes'; 
+import Profile from './views/Profile'; 
+import Barcode from './views/Barcode';
+import Search from './views/Search';
 import './App.css';
 
 const initialState = {
@@ -109,26 +114,30 @@ function App() {
             <Header />
             <DateDisplay />
             <main className="main-content">
-              <MacroBreakdown nutrition={nutritionData.macros} />
+              <Routes>
+                <Route path="/" element={<MacroBreakdown nutrition={nutritionData.macros} />} />
+                <Route path="/stats" element={<Stats />} />
+                <Route path="/recipes" element={<Recipes />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/barcode" element={<Barcode />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/nutrition-results" element={<NutritionResults nutritionData={nutritionData} onEditComplete={handleEditComplete} />} />
+              </Routes>
               {showEditModal && (
                 <NutritionResults
                   nutritionData={nutritionData}
                   onEditComplete={handleEditComplete}
                 />
               )}
-              <Snackbar
-                open={snackbar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-              >
-                <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
-                  {snackbar.message}
-                </Alert>
-              </Snackbar>
             </main>
             <Nav onNutritionDataReceived={handleNutritionData} />
           </>
         )}
+        <Snackbar open={false} autoHideDuration={6000}>
+          <Alert severity="info">
+            Sample message
+          </Alert>
+        </Snackbar>
       </div>
     </BrowserRouter>
   );

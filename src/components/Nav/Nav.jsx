@@ -109,7 +109,7 @@ function Nav({ onNutritionDataReceived }) {
   return (
     <>
       <nav className="nav w-full fixed bottom-0 left-0 z-10">
-      <Link to="/home" className="nav-item" onClick={() => console.log('Home clicked')}>
+      <Link to="/" className="nav-item" onClick={() => console.log('Home clicked')}>
         <HomeOutlinedIcon className="nav-icon"/>
         <span>Home</span>
       </Link>
