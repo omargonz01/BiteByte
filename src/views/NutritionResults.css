@@ -8,35 +8,53 @@
 }
 
 .meal-header {
+  position: relative;
   background-color: #f8f8f8;
   padding: 10px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;  
+  align-items: center;  
 }
 
 .meal-header h2 {
-  margin: 0;
   color: #333;
   font-size: 18px;
+  text-align: center; 
+  margin: 0; 
+  word-wrap: break-word; 
 }
 
 .meal-header p {
-  margin: 5px 0 0;
   color: #666;
   font-size: 12px;
+  margin-top: 5px; 
+  width: 100%; 
+  text-align: center; 
 }
 
-.meal-header button {
-  margin-top: 5px;
+.meal-header .close-button, .meal-header .edit-button {
+  position: absolute;
+  top: 10px;
   padding: 5px 10px;
-  background-color: #5cb85c;
-  color: white;
+  background-color: #f9fdf9;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.meal-header button:hover {
-  background-color: #4cae4c;
+.close-button {
+  left: 10px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edit-button {
+  right: 10px;
+}
+
+.close-button:hover {
+  background-color: #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .meal-image img {
@@ -46,10 +64,6 @@
 
 .nutrition-breakdown {
   padding: 15px;
-}
-
-.nutrition-info {
-  margin-bottom: 20px;
 }
 
 .nutrition-item {
@@ -69,8 +83,8 @@
   flex: 2;
   padding: 5px;
   font-size: 14px;
-  color: #333;            
-  background-color: #fff; 
+  color: #333;
+  background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -85,10 +99,12 @@
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 2px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .save-button:hover {
-  background-color: #5A6D57;
+  background-color: #4a5747;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .ingredients-list h3 {
@@ -110,18 +126,4 @@
   margin-bottom: 10px;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.close-button {
-  padding: 10px;
-  width: 100%;
-  background-color: #d9534f; 
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  background-color: #c9302c; 
 }

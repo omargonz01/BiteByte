@@ -80,10 +80,13 @@ const handleClose = () => {
 return (
   <div className="nutrition-results">
     <div className="meal-header">
-      <h2>{details.mealName}</h2>
-      <p>{details.date}</p>
+      <button onClick={handleClose} className="close-button">X</button>
+      <div className="meal-header-content">
+        <h2>{details.mealName}</h2>
+        <p>{details.date}</p>
+      </div>
       {!isEditing && (
-        <button onClick={() => setIsEditing(true)}>Edit</button>
+        <button onClick={() => setIsEditing(true)} className="edit-button">Edit</button>
       )}
     </div>
     <div className="meal-image">
@@ -109,7 +112,6 @@ return (
             <input type="number" id="totalFat" name="totalFat" value={details.totalFat} onChange={handleNutritionChange} />
           </div>
           <button className="save-button" onClick={handleSave}>Save</button>
-          <button onClick={handleClose} className="close-button">Cancel</button>
         </>
       ) : (
         <>
@@ -121,18 +123,18 @@ return (
       )}
     </div>
     {/* Display Ingredients List */}
-      <div className="ingredients-list">
-        <h3>Ingredients</h3>
-        <ul>
-          {details.ingredients.map((ingredient, index) => (
-            <li key={index} className="ingredient-item">
-              <strong>{ingredient.name}</strong>
-              <div><strong>Calories:</strong> {ingredient.calories} kcal</div>
-              <div><strong>Carbs:</strong> {ingredient.carbs} g, <strong>Protein:</strong> {ingredient.protein} g, <strong>Fat:</strong> {ingredient.fat} g</div>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="ingredients-list">
+      <h3>Ingredients</h3>
+      <ul>
+        {details.ingredients.map((ingredient, index) => (
+          <li key={index} className="ingredient-item">
+            <strong>{ingredient.name}</strong>
+            <div><strong>Calories:</strong> {ingredient.calories} kcal</div>
+            <div><strong>Carbs:</strong> {ingredient.carbs} g, <strong>Protein:</strong> {ingredient.protein} g, <strong>Fat:</strong> {ingredient.fat} g</div>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 );
 };
