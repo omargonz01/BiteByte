@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './NutritionResults.css';
 import moment from 'moment';
 
@@ -14,6 +15,7 @@ const NutritionResults = ({ nutritionData, onEditComplete }) => {
     ingredients: [],
   });
   const [isEditing, setIsEditing] = useState(true); // Start in editing mode
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('NutritionData updated:', nutritionData);
@@ -62,6 +64,7 @@ const handleSave = () => {
   console.log('Updating nutrition data:', updatedNutritionData); // Debugging line to check the data
   onEditComplete(updatedNutritionData); // Send updates to App
   setIsEditing(false); // End editing mode
+  navigate('/');
 };
 
 const handleClose = () => {
