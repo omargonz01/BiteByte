@@ -18,7 +18,7 @@ const NutritionResults = ({ nutritionData, onEditComplete }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('NutritionData updated:', nutritionData);
+    // console.log('NutritionData updated:', nutritionData);
     if (nutritionData) {
       setDetails({
         mealName: nutritionData.dish || 'N/A',
@@ -61,7 +61,7 @@ const handleSave = () => {
       lastUpdated: moment().format('MMMM Do YYYY, h:mm:ss a')
   };
 
-  console.log('Updating nutrition data:', updatedNutritionData); // Debugging line to check the data
+  // console.log('Updating nutrition data:', updatedNutritionData); // Debugging line to check the data
   onEditComplete(updatedNutritionData); // Send updates to App
   setIsEditing(false); // End editing mode
   navigate('/');
