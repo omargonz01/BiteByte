@@ -15,16 +15,13 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
             await processImage(file);
         }
     };
-    
+
     const processImage = async (file) => {
         setIsLoading(true);
         setErrorMessage('');
-        const formData = new FormData();
-        formData.append('image', file);
-    
         try {
             const nutritionData = await uploadImageAndGetNutrition(file);
-            console.log("Nutrition data received in ImageUpload:", nutritionData);
+            console.log("Nutrition data received:", nutritionData);
             onNutritionData(nutritionData);
             onImageSelected && onImageSelected(file);
         } catch (error) {
@@ -35,8 +32,7 @@ function ImageUpload({ onImageSelected, onNutritionData }) {
                   <br />
                   <span>Oops! Unable to fetch nutrition data. Please ensure the image is of food and try again.</span>
                 </>
-              );
-            handleSubmit(formData); 
+            );
         } finally {
             setIsLoading(false);
             setSelectedImage(null);
