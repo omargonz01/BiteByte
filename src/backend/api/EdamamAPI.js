@@ -56,30 +56,6 @@ async function searchRecipes(query) {
 }
 
 /**
- * Fetches recipes based on a search query using the Edamam Recipe Search API.
- * Uses API keys configured for client-side use.
- * 
- * @param {string} query - The search query.
- * @returns {Promise<Object>} A promise that resolves to a list of recipes.
- * @throws {Error} Throws an error if the API request fails.
- */
-const fetchRecipes = async (query) => {
-  const url = `https://api.edamam.com/search?q=${query}&app_id=${process.env.VITE_EDAMAM_APP_ID}&app_key=${process.env.VITE_EDAMAM_APP_KEY}&to=20`;
-  try {
-    const response = await axios.get(url);
-    const data = response.data;
-    return data.hits.map(item => ({
-      id: item.recipe.uri.split('#')[1],
-      label: item.recipe.label,
-      url: item.recipe.url
-    }));
-  } catch (error) {
-    console.error("Failed to fetch recipes:", error);
-    throw error;
-  }
-};
-
-/**
  * Formats a list of ingredients into a string suitable for API calls to Edamam.
  * 
  * @param {Array} ingredients - The ingredients to format.
@@ -140,4 +116,4 @@ function extractKeyNutrients(data) {
   return formatNutritionValues(nutrients);
 }
 
-export { getFoodDatabaseInfo, searchRecipes, getNutritionalInfoForIngredient, fetchRecipes };
+export { getFoodDatabaseInfo, searchRecipes, getNutritionalInfoForIngredient };
