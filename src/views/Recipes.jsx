@@ -1,5 +1,43 @@
 import React, { useState } from 'react';
-import { searchRecipes } from '../backend/api/EdamamAPI'; 
+import { searchRecipes } from '../backend/api/EdamamAPI';
+import {
+  Card, CardContent, CardMedia, Typography, Chip, Grid, TextField, Button, CircularProgress
+} from '@mui/material';
+
+const RecipeCard = ({ recipe }) => {
+  return (
+    <Card raised>
+      <CardMedia
+        component="img"
+        height="20"
+        image={recipe.image }
+        alt={recipe.label}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {recipe.label}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Calories: {Math.round(recipe.calories)}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Servings: {recipe.yield}
+        </Typography>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '10px' }}>
+          {recipe.dietLabels.map((label, index) => (
+            <Chip key={index} label={label} color="primary" />
+          ))}
+          {recipe.healthLabels.map((label, index) => (
+            <Chip key={index} label={label} variant="outlined" />
+          ))}
+          {recipe.ingredientLines.map((line, index) => (
+            <Typography key={index} variant="body2" color="textSecondary">{line}</Typography>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 const Recipes = () => {
   const [query, setQuery] = useState('');
@@ -15,8 +53,8 @@ const Recipes = () => {
       setError(null);
       setLoading(true);
       try {
-          const result = await searchRecipes(query);
-          setRecipes(result.hits || []); // Safeguard against undefined 'hits'
+          const fetchedRecipes = await searchRecipes(query);
+          setRecipes(fetchedRecipes);
           setLoading(false);
       } catch (error) {
           setError('Failed to fetch recipes. Please try again.');
@@ -42,7 +80,7 @@ const Recipes = () => {
         boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
         padding: '24px'
       }}>
-        <h1 style={{ fontSize: '36px', fontWeight: 'bold', color: '#5A6D57', marginBottom: '1px' }}>
+        <h1 style={{ fontSize: '36px', fontWeight: 'bold', color: '#5A6D57', marginBottom: '20px' }}>
           Search Recipes
         </h1>
         <input 
@@ -58,11 +96,11 @@ const Recipes = () => {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
         {recipes.length > 0 && (
-          <ul>
+          <div>
             {recipes.map((recipe, index) => (
-              <li key={index}>{recipe.recipe.label}</li> // Ensuring recipes are displayed
+              <RecipeCard key={index} recipe={recipe} />
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>

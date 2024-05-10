@@ -48,7 +48,18 @@ async function searchRecipes(query) {
         q: query
       }
     });
-    return response.data;
+
+    // Transform the data to include additional details
+    return response.data.hits.map(hit => ({
+      name: hit.recipe.label,
+      image: hit.recipe.image,
+      url: hit.recipe.url,
+      calories: Math.floor(hit.recipe.calories),
+      servings: hit.recipe.yield,
+      dietLabels: hit.recipe.dietLabels,
+      healthLabels: hit.recipe.healthLabels,
+      ingredientLines: hit.recipe.ingredientLines
+    }));
   } catch (error) {
     console.error('Error in Recipe Search API:', error.message);
     throw error;
