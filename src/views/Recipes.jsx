@@ -58,9 +58,13 @@ const Recipes = () => {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
         {recipes.length > 0 && (
-          <ul>
+          <ul style={{ listStyle: 'none', padding: 0 }}>
             {recipes.map((recipe, index) => (
-              <li key={index}>{recipe.recipe.label}</li> // Ensuring recipes are displayed
+              <li key={index} style={{ margin: '10px 0' }}>
+                <a href={recipe.url} target="_blank" rel="noopener noreferrer" style={{ color: '#1D8348', textDecoration: 'none' }}>
+                  {recipe.label}
+                </a>
+              </li>
             ))}
           </ul>
         )}

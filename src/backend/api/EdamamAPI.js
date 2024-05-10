@@ -8,7 +8,7 @@ const RECIPE_SEARCH_API_ENDPOINT = 'https://api.edamam.com/api/recipes/v2';
 
 /**
  * Retrieves information about a specific ingredient from the Edamam Food Database API.
- * This function constructs the query using API keys stored in environment variables for front-end use.
+ * Uses API keys stored in environment variables for front-end use.
  * 
  * @param {string} ingredient - The name of the ingredient to search for.
  * @returns {Promise<Object>} A promise that resolves to the API response data.
@@ -32,9 +32,9 @@ async function getFoodDatabaseInfo(ingredient) {
 
 /**
  * Searches for recipes based on a given query using the Edamam Recipe Search API.
- * Utilizes API keys configured for client-side use in a .env file accessible through Vite.
+ * Uses API keys configured for client-side use.
  * 
- * @param {string} query - The search query to execute.
+ * @param {string} query - The search query.
  * @returns {Promise<Object>} A promise that resolves to the search results from the API.
  * @throws {Error} Throws an error if the API request fails.
  */
@@ -56,10 +56,33 @@ async function searchRecipes(query) {
 }
 
 /**
- * Formats a list of ingredients into a string suitable for API calls to Edamam.
- * This function concatenates multiple ingredients into a single string formatted for the API endpoint.
+ * Fetches recipes based on a search query using the Edamam Recipe Search API.
+ * Uses API keys configured for client-side use.
  * 
- * @param {Array} ingredients - An array of ingredients to format.
+ * @param {string} query - The search query.
+ * @returns {Promise<Object>} A promise that resolves to a list of recipes.
+ * @throws {Error} Throws an error if the API request fails.
+ */
+const fetchRecipes = async (query) => {
+  const url = `https://api.edamam.com/search?q=${query}&app_id=${process.env.VITE_EDAMAM_APP_ID}&app_key=${process.env.VITE_EDAMAM_APP_KEY}&to=20`;
+  try {
+    const response = await axios.get(url);
+    const data = response.data;
+    return data.hits.map(item => ({
+      id: item.recipe.uri.split('#')[1],
+      label: item.recipe.label,
+      url: item.recipe.url
+    }));
+  } catch (error) {
+    console.error("Failed to fetch recipes:", error);
+    throw error;
+  }
+};
+
+/**
+ * Formats a list of ingredients into a string suitable for API calls to Edamam.
+ * 
+ * @param {Array} ingredients - The ingredients to format.
  * @returns {string} A formatted string of ingredients.
  */
 function formatIngredientsForEdamam(ingredients) {
@@ -68,9 +91,8 @@ function formatIngredientsForEdamam(ingredients) {
 
 /**
  * Retrieves nutritional information for a specific ingredient from the Edamam Nutrition API.
- * This function handles both the API request and response formatting using server-side API keys.
  * 
- * @param {Object} ingredient - An object representing the ingredient with quantity, unit, and name.
+ * @param {Object} ingredient - The ingredient with quantity, unit, and name.
  * @returns {Promise<Object>} A promise that resolves to formatted nutritional information.
  * @throws {Error} Throws an error if the API request fails or if no nutritional data is found.
  */
@@ -99,10 +121,9 @@ async function getNutritionalInfoForIngredient(ingredient) {
 
 /**
  * Extracts and formats key nutritional values from API response data.
- * This utility function simplifies the API data to include only essential nutrients and their values.
  * 
- * @param {Object} data - The API response data containing nutritional information.
- * @returns {Object} A simplified object with formatted nutritional values.
+ * @param {Object} data - The API response data.
+ * @returns {Object} Formatted nutritional values.
  */
 function extractKeyNutrients(data) {
   if (!data || !data.totalNutrients) {
@@ -119,4 +140,4 @@ function extractKeyNutrients(data) {
   return formatNutritionValues(nutrients);
 }
 
-export { getFoodDatabaseInfo, searchRecipes, getNutritionalInfoForIngredient };
+export { getFoodDatabaseInfo, searchRecipes, getNutritionalInfoForIngredient, fetchRecipes };

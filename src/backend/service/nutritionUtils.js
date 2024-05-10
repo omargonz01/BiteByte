@@ -2,11 +2,20 @@ import { formatNutritionValues } from './parseNutritionalData.js';
 
 // Utility function to calculate calories based on macronutrients
 function calculateCalories({ protein, carbohydrates, fat }) {
-  if ([protein, carbohydrates, fat].some(val => typeof val !== 'number')) {
-    throw new TypeError('Nutritional values must be numbers');
+  // Convert string inputs to numbers if they are not already
+  protein = Number(protein);
+  carbohydrates = Number(carbohydrates);
+  fat = Number(fat);
+
+  // Check if any values are still not numbers or are NaN
+  if (![protein, carbohydrates, fat].every(val => typeof val === 'number' && !isNaN(val))) {
+    console.error('Invalid inputs', { protein, carbohydrates, fat });
+    throw new TypeError("Nutritional values must be numbers");
   }
+
   return (4 * protein) + (4 * carbohydrates) + (9 * fat);
 }
+
 
 // Function to calculate the average nutrition data from two sources
 function averageNutrition(ingredientName, nutritionA, nutritionB) {
