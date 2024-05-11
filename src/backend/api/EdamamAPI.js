@@ -58,7 +58,11 @@ async function searchRecipes(query) {
       servings: hit.recipe.yield,
       dietLabels: hit.recipe.dietLabels,
       healthLabels: hit.recipe.healthLabels,
-      ingredientLines: hit.recipe.ingredientLines
+      ingredientLines: hit.recipe.ingredientLines,
+      totalNutrients: { 
+        protein: hit.recipe.totalNutrients.PROCNT.quantity,
+        fat: hit.recipe.totalNutrients.FAT.quantity,
+        carbs: hit.recipe.totalNutrients.CHOCDF.quantity}
     }));
   } catch (error) {
     console.error('Error in Recipe Search API:', error.message);
