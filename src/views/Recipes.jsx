@@ -145,24 +145,28 @@ const Recipes = () => {
                   </Box>
                 </Grid>
                 <Grid item>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <RestaurantIcon sx={{ mr: 1 }} />
-                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Source:</Typography>
-                    <Typography sx={{ ml: 1 }}>{selectedRecipe.source}</Typography>
-                  </Box>
-                </Grid>
-                <Grid item>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <LinkIcon sx={{ mr: 1 }} />
-                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Recipe URL:</Typography>
-                    <Typography sx={{ ml: 1 }}>
-                      <a href={selectedRecipe.url} target="_blank" rel="noopener noreferrer">
-                        {selectedRecipe.url}
-                      </a>
-                    </Typography>
-                  </Box>
-                </Grid>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <LinkIcon sx={{ mr: 1 }} />
+                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Source:</Typography>
+                  <Typography
+                    component="a"
+                    href={selectedRecipe.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      ml: 1,
+                      color: 'primary.main',
+                      textDecoration: 'none',
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    {selectedRecipe.source}
+                  </Typography>
+                </Box>
               </Grid>
+            </Grid>
             </Box>
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, display: 'flex', alignItems: 'center' }}>
               <RestaurantMenuIcon sx={{ mr: 1 }} /> Ingredients:
