@@ -54,6 +54,7 @@ async function searchRecipes(query) {
       name: hit.recipe.label,
       image: hit.recipe.image,
       url: hit.recipe.url,
+      source: hit.recipe.source,
       calories: Math.floor(hit.recipe.calories),
       servings: hit.recipe.yield,
       dietLabels: hit.recipe.dietLabels,
