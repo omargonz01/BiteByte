@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { searchRecipes } from '../backend/api/EdamamAPI';
-import { Card, CardActionArea, CardMedia, CardContent, Chip, Typography, IconButton, Dialog, DialogTitle, DialogContent, TextField, Grid, Box } from '@mui/material';
+import { Card, CardActionArea, CardMedia, CardContent, Chip, Typography, IconButton, Dialog, DialogTitle, DialogContent, TextField, Grid, Box, List, ListItem, ListItemText } from '@mui/material';
 import { green, orange, red } from '@mui/material/colors';
 import SearchIcon from '@mui/icons-material/Search';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import LinkIcon from '@mui/icons-material/Link';
+import CloseIcon from '@mui/icons-material/Close';
 import './Recipes.css';
 
 const RecipeCard = ({ recipe, onOpen }) => (
@@ -85,6 +91,11 @@ const Recipes = () => {
             label="Search for recipes"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
             variant="outlined"
             sx={{ mr: 2, backgroundColor: 'white', borderRadius: 1 }}
           />
@@ -108,21 +119,74 @@ const Recipes = () => {
       </Grid>
       {selectedRecipe && (
         <Dialog open={Boolean(selectedRecipe)} onClose={handleClose} aria-labelledby="recipe-dialog-title" maxWidth="md" fullWidth>
-          <DialogTitle id="recipe-dialog-title" sx={{ fontWeight: 'bold' }}>{selectedRecipe.label}</DialogTitle>
+          <DialogTitle id="recipe-dialog-title" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h4" component="span" sx={{ fontWeight: 'bold' }}>
+              {selectedRecipe.label}
+            </Typography>
+            <IconButton onClick={handleClose} aria-label="close" sx={{ color: 'text.primary' }}>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
           <DialogContent sx={{ padding: 4 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-              <Typography>Calories: {Math.round(selectedRecipe.calories)} kcal</Typography>
-              <Typography>Servings: {selectedRecipe.servings}</Typography>
+            <Box sx={{ backgroundColor: 'grey.100', borderRadius: 1, p: 2, mb: 4 }}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <FastfoodIcon sx={{ mr: 1 }} />
+                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Calories:</Typography>
+                    <Typography sx={{ ml: 1 }}>{Math.round(selectedRecipe.calories)} kcal</Typography>
+                  </Box>
+                </Grid>
+                <Grid item>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <RestaurantIcon sx={{ mr: 1 }} />
+                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Servings:</Typography>
+                    <Typography sx={{ ml: 1 }}>{selectedRecipe.servings}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <RestaurantIcon sx={{ mr: 1 }} />
+                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Source:</Typography>
+                    <Typography sx={{ ml: 1 }}>{selectedRecipe.source}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <LinkIcon sx={{ mr: 1 }} />
+                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Recipe URL:</Typography>
+                    <Typography sx={{ ml: 1 }}>
+                      <a href={selectedRecipe.url} target="_blank" rel="noopener noreferrer">
+                        {selectedRecipe.url}
+                      </a>
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
             </Box>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Ingredients:</Typography>
-            {selectedRecipe.ingredientLines.map((line, idx) => (
-              <Typography key={idx} sx={{ mb: 1 }}>{line}</Typography>
-            ))}
-            <Box sx={{ mt: 4 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>Health Labels:</Typography>
-              {selectedRecipe.healthLabels.map((label, idx) => (
-                <Chip key={idx} label={label} sx={{ mr: 1, mb: 1, backgroundColor: green[100], color: green[800] }} />
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, display: 'flex', alignItems: 'center' }}>
+              <RestaurantMenuIcon sx={{ mr: 1 }} /> Ingredients:
+            </Typography>
+            <List sx={{ listStyleType: 'disc', pl: 4 }}>
+              {selectedRecipe.ingredientLines.map((line, idx) => (
+                <ListItem key={idx} sx={{ display: 'list-item' }}>
+                  <ListItemText primary={line} />
+                </ListItem>
               ))}
+            </List>
+            <Box sx={{ mt: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, display: 'flex', alignItems: 'center' }}>
+                <LocalOfferIcon sx={{ mr: 1 }} /> Health Labels:
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                {selectedRecipe.healthLabels.map((label, idx) => (
+                  <Chip
+                    key={idx}
+                    label={label}
+                    sx={{ m: 0.5, backgroundColor: green[100], color: green[800] }}
+                  />
+                ))}
+              </Box>
             </Box>
           </DialogContent>
         </Dialog>
