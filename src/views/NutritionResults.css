@@ -9,11 +9,11 @@
 
 .meal-header {
   position: relative;
-  background-color: #f8f8f8;
-  padding: 10px;
   display: flex;
-  flex-direction: column;  
-  align-items: center;  
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f8f8;
 }
 
 .meal-header h2 {
@@ -32,6 +32,11 @@
   text-align: center; 
 }
 
+.meal-header-content {
+  flex-grow: 1;
+  text-align: center;
+}
+
 .meal-header .close-button, .meal-header .edit-button {
   position: absolute;
   top: 10px;
@@ -44,15 +49,15 @@
 }
 
 .close-button {
-  left: 10px;
+  right: 10px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .edit-button {
-  right: 10px;
+  left: 10px;
 }
 
-.close-button:hover {
+.close-button:hover, .edit-button:hover {
   background-color: #e0e0e0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }

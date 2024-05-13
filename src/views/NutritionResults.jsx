@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NutritionResults.css';
 import moment from 'moment';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const NutritionResults = ({ nutritionData, onEditComplete }) => {
   const [details, setDetails] = useState({
@@ -83,11 +85,13 @@ const handleClose = () => {
 return (
   <div className="nutrition-results">
     <div className="meal-header">
-      <button onClick={handleClose} className="close-button">X</button>
       <div className="meal-header-content">
         <h2>{details.mealName}</h2>
         <p>{details.date}</p>
       </div>
+      <IconButton onClick={handleClose} aria-label="close" className="close-button">
+        <CloseIcon />
+      </IconButton>
       {!isEditing && (
         <button onClick={() => setIsEditing(true)} className="edit-button">Edit</button>
       )}
@@ -100,19 +104,43 @@ return (
         <>
           <div className="nutrition-item">
             <label htmlFor="totalCalories">Calories</label>
-            <input type="number" id="totalCalories" name="totalCalories" value={details.totalCalories} onChange={handleNutritionChange} />
+            <input
+              type="number"
+              id="totalCalories"
+              name="totalCalories"
+              value={details.totalCalories}
+              onChange={handleNutritionChange}
+            />
           </div>
           <div className="nutrition-item">
             <label htmlFor="totalCarbs">Carbs</label>
-            <input type="number" id="totalCarbs" name="totalCarbs" value={details.totalCarbs} onChange={handleNutritionChange} />
+            <input
+              type="number"
+              id="totalCarbs"
+              name="totalCarbs"
+              value={details.totalCarbs}
+              onChange={handleNutritionChange}
+            />
           </div>
           <div className="nutrition-item">
             <label htmlFor="totalProteins">Proteins</label>
-            <input type="number" id="totalProteins" name="totalProteins" value={details.totalProteins} onChange={handleNutritionChange} />
+            <input
+              type="number"
+              id="totalProteins"
+              name="totalProteins"
+              value={details.totalProteins}
+              onChange={handleNutritionChange}
+            />
           </div>
           <div className="nutrition-item">
             <label htmlFor="totalFat">Fats</label>
-            <input type="number" id="totalFat" name="totalFat" value={details.totalFat} onChange={handleNutritionChange} />
+            <input
+              type="number"
+              id="totalFat"
+              name="totalFat"
+              value={details.totalFat}
+              onChange={handleNutritionChange}
+            />
           </div>
           <button className="save-button" onClick={handleSave}>Save</button>
         </>
@@ -125,7 +153,6 @@ return (
         </>
       )}
     </div>
-    {/* Display Ingredients List */}
     <div className="ingredients-list">
       <h3>Ingredients</h3>
       <ul>
@@ -133,7 +160,11 @@ return (
           <li key={index} className="ingredient-item">
             <strong>{ingredient.name}</strong>
             <div><strong>Calories:</strong> {ingredient.calories} kcal</div>
-            <div><strong>Carbs:</strong> {ingredient.carbs} g, <strong>Protein:</strong> {ingredient.protein} g, <strong>Fat:</strong> {ingredient.fat} g</div>
+            <div>
+              <strong>Carbs:</strong> {ingredient.carbs} g,{' '}
+              <strong>Protein:</strong> {ingredient.protein} g,{' '}
+              <strong>Fat:</strong> {ingredient.fat} g
+            </div>
           </li>
         ))}
       </ul>
