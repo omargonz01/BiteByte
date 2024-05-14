@@ -27,7 +27,7 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate('/sign-in');
+      navigate('/profile');
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -40,8 +40,10 @@ const Profile = () => {
         {isAuthenticated ? (
           <div>
             <h2 className="profile-subtitle">Welcome, {auth.currentUser.email}</h2>
-            <button className="profile-button" onClick={handleLogout}>Log Out</button>
+            <div className="profile-signout-container">
+              <button className="profile-signout-button" onClick={handleLogout}>Log Out</button>
             {/* Display user profile information and additional options */}
+            </div>
           </div>
         ) : (
           <div>
