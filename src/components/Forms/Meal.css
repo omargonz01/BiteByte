@@ -1,0 +1,46 @@
+.meal {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .meal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .meal-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .meal-calories {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .meal-details {
+    margin-top: 16px;
+  }
+  
+  .meal-ingredients {
+    margin-top: 8px;
+  }
+  
+  .ingredient {
+    margin-bottom: 8px;
+  }
+  
+  .ingredient-name {
+    font-weight: bold;
+  }
+  
+  .ingredient-info {
+    font-size: 14px;
+    color: #555;
+  }

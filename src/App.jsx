@@ -15,6 +15,7 @@ import SignUp from './components/Auth/AuthSignUp';
 import Barcode from './views/Barcode';
 import Search from './views/Search';
 import './App.css';
+import { auth } from './backend/config/firebaseClient';
 
 const initialState = {
   dish: '',
@@ -39,32 +40,86 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [nutritionData, setNutritionData] = useState(initialState);
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' }); // Added state for snackbar
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'error' });
+  const [isLoading, setIsLoading] = useState(false);
+  const [meals, setMeals] = useState([]);
+  const [macros, setMacros] = useState({ calories: 0, carbohydrates: 0, protein: 0, fat: 0 });
+
+
 
   useEffect(() => {
     const timer = setTimeout(() => setShowWelcome(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
-  const handleNutritionData = (data) => {
-    console.log("Received nutrition data:", data); // Add this log
+  const handleNutritionData = async (data) => {
+    console.log("Received nutrition data:", data);
+  
     if (data && data.success && data.finalNutritionData) {
-      setNutritionData({
-        dish: data.finalNutritionData.dish,
-        imageURL: data.finalNutritionData.imageURL,
-        macros: {
-          calories: data.finalNutritionData.macros.calories,
-          carbohydrates: data.finalNutritionData.macros.carbohydrates,
-          protein: data.finalNutritionData.macros.protein,
-          fat: data.finalNutritionData.macros.fat
-        },
-        ingredients: data.finalNutritionData.ingredients,
-        editVersion: nutritionData.editVersion + 1 
-      });
-      setShowEditModal(true);
-      console.log("Nutrition data set in state:", nutritionData); // Log after state update
+      setIsLoading(true);
+  
+      try {
+        const userId = auth.currentUser?.uid;
+  
+        if (userId) {
+          // User is authenticated, save the meal data to Firebase
+          const response = await fetch(`${import.meta.env.VITE_FIREBASE_PROJECT_ID}/users/${userId}/meals.json`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data.finalNutritionData),
+          });
+  
+          if (response.ok) {
+            const newMealKey = await response.json();
+            setNutritionData({
+              id: newMealKey.name,
+              dish: data.finalNutritionData.dish,
+              imageURL: data.finalNutritionData.imageURL,
+              macros: {
+                calories: data.finalNutritionData.macros.calories,
+                carbohydrates: data.finalNutritionData.macros.carbohydrates,
+                protein: data.finalNutritionData.macros.protein,
+                fat: data.finalNutritionData.macros.fat
+              },
+              ingredients: data.finalNutritionData.ingredients,
+              editVersion: nutritionData.editVersion + 1
+            });
+            setShowEditModal(true);
+          } else {
+            throw new Error('Failed to save meal data');
+          }
+        } else {
+          // User is not authenticated, update the state with the macro breakdown data without saving to Firebase
+          const newMealData = data.finalNutritionData;
+          setNutritionData({
+            dish: data.finalNutritionData.dish,
+            imageURL: data.finalNutritionData.imageURL,
+            macros: {
+              calories: data.finalNutritionData.macros.calories,
+              carbohydrates: data.finalNutritionData.macros.carbohydrates,
+              protein: data.finalNutritionData.macros.protein,
+              fat: data.finalNutritionData.macros.fat
+            },
+            ingredients: data.finalNutritionData.ingredients,
+            editVersion: nutritionData.editVersion + 1
+          });
+          setMeals([newMealData]); // Set the meals state with the new meal data
+          setMacros(newMealData.macros); // Set the macros state with the new meal macros
+          setShowEditModal(true);    
+        }
+      } catch (error) {
+        console.error("Error saving meal data:", error);
+        setSnackbar({
+          open: true,
+          message: "Failed to save meal data. Please try again.",
+          severity: 'error'
+        });
+      } finally {
+        setIsLoading(false);
+      }
     } else {
-      // Log an error or handle the case where data is missing
       console.log("Data missing or invalid:", data);
       setSnackbar({
         open: true,
@@ -92,17 +147,25 @@ function App() {
         fat: parseFloat(updatedData.totalFat) || 0
       };
   
-      // Directly update without calculating differences
       return {
         ...prevData,
         dish: updatedData.mealName,
         imageURL: updatedData.imageURL,
-        macros: newMacros, // Update directly with new values
-        originalMacros: newMacros, // Keep sync between original and current
+        macros: newMacros,
+        originalMacros: newMacros,
         ingredients: updatedData.ingredients,
         editVersion: prevData.editVersion + 1
       };
     });
+    
+    // Update the macros state for non-signed-in users
+    setMacros({
+      calories: parseFloat(updatedData.totalCalories) || 0,
+      carbohydrates: parseFloat(updatedData.totalCarbs) || 0,
+      protein: parseFloat(updatedData.totalProteins) || 0,
+      fat: parseFloat(updatedData.totalFat) || 0
+    });
+
     setShowEditModal(false);
   };
 
@@ -116,17 +179,17 @@ function App() {
             <Header />
             <DateDisplay />
             <main className="main-content">
-              <Routes>
-                <Route path="/" element={<MacroBreakdown nutrition={nutritionData.macros} />} />
-                <Route path="/stats" element={<Stats />} />
-                <Route path="/recipes" element={<Recipes />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/sign-in" element={<SignIn />} /> 
-                <Route path="/sign-up" element={<SignUp />} /> 
-                <Route path="/barcode" element={<Barcode />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/nutrition-results" element={<NutritionResults nutritionData={nutritionData} onEditComplete={handleEditComplete} />} />
-              </Routes>
+            <Routes>
+              <Route path="/" element={<MacroBreakdown nutritionData={nutritionData} />} />
+              <Route path="/stats" element={<Stats />} />
+              <Route path="/recipes" element={<Recipes />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/barcode" element={<Barcode />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/nutrition-results" element={<NutritionResults nutritionData={nutritionData} onEditComplete={handleEditComplete} />} />
+            </Routes>
               {showEditModal && (
                 <NutritionResults
                   nutritionData={nutritionData}
@@ -137,14 +200,23 @@ function App() {
             <Nav onNutritionDataReceived={handleNutritionData} />
           </>
         )}
-        <Snackbar open={false} autoHideDuration={6000}>
-          <Alert severity="info">
-            Sample message
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+        >
+          <Alert severity={snackbar.severity} sx={{ width: '100%' }}>
+            {snackbar.message}
           </Alert>
         </Snackbar>
+        {isLoading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+          </div>
+        )}
       </div>
     </BrowserRouter>
   );
 }
 
-export default App;
+export default App; 

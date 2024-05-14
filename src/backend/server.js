@@ -19,7 +19,6 @@ const allowedOrigins = [
   'http://localhost:5173'
 ];
 
-
 // Enable CORS for client-side app on a different port or domain
 app.use(cors({
   origin: function (origin, callback) {
@@ -107,40 +106,39 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
     // Final combination of all data
     const combinedGeminiEdamamIngredientsNutrition = combineNutritionData(averagedTotalNutrition, sumAveragedIngredientsNutrition);
     const finalNutritionData = {
-      dish: structuredData.dish, // The name of the dish
+      dish: structuredData.dish || 'N/A', // Ensure a valid value for the "dish" property
       imageURL: imageURL,
       macros: combinedGeminiEdamamIngredientsNutrition, // The formatted macro values and calories
       ingredients: averagedIngredientsNutrition // The detailed nutrition per ingredient
     };
 
-    // Debug Check
-    console.log("Gemini Ingredients Nutrition:", JSON.stringify(structuredData.ingredients, null, 2));
-    console.log("Edamam Ingredients Nutrition:", JSON.stringify(edamamIngredientsNutrition, null, 2));
-    console.log("Averaged Ingredients Nutrition:", JSON.stringify(averagedIngredientsNutrition, null, 2));
-    console.log("Sum Averaged Ingredients Nutrition:", JSON.stringify(sumAveragedIngredientsNutrition, null, 2));
-    console.log("Gemini Total Nutrition:", JSON.stringify(structuredData.totals, null, 2));
-    console.log("Edamam Total Nutrition:", JSON.stringify(edamamTotalNutrition, null, 2));
-    console.log("Averaged Ingredients Total Nutrition:", JSON.stringify(averagedTotalNutrition, null, 2));
-    console.log("Averaged (Gemini, Edamam, & Ingredients) Total Nutrition:", JSON.stringify(finalNutritionData, null, 2));
+    // Check if the user is authenticated
+    if (req.user && req.user.uid) {
+      const userId = req.user.uid;
 
+      // Save the meal data under the user's ID
+      const newMealKey = admin.database().ref(`users/${userId}/meals`).push().key;
+      await admin.database().ref(`users/${userId}/meals/${newMealKey}`).set(finalNutritionData);
 
-    // Save and respond
-    const newDataKey = admin.database().ref('dishes').push().key;
-    await admin.database().ref(`dishes/${newDataKey}`).set(finalNutritionData);
-
-    return res.json({
-      success: true,
-      firebaseKey: newDataKey,
-      // data: structuredData,  // Unaltered initial data from image analysis
-      // edamamIngredientsNutrition,  // Detailed nutrition per ingredient from Edamam
-      // averagedIngredientsNutrition,  // Average of Gemini and Edamam data per ingredient
-      // sumAveragedIngredientsNutrition,  // Sum of the averaged ingredient nutrition
-      // geminiTotalNutrition: structuredData.totals,  // Gemini original total nutrition calculation
-      // edamamTotalNutrition,  // Sum of all Edamam nutritional data for all ingredients
-      // averagedTotalNutrition,  // Average of Gemini's total nutrition and Edamam's total nutrition
-      finalNutritionData  // Final formatted nutritional data (Gemini + Edamam + SummedIngredients)
-    });
-
+      return res.json({
+        success: true,
+        firebaseKey: newMealKey,
+        // data: structuredData,  // Unaltered initial data from image analysis
+        // edamamIngredientsNutrition,  // Detailed nutrition per ingredient from Edamam
+        // averagedIngredientsNutrition,  // Average of Gemini and Edamam data per ingredient
+        // sumAveragedIngredientsNutrition,  // Sum of the averaged ingredient nutrition
+        // geminiTotalNutrition: structuredData.totals,  // Gemini original total nutrition calculation
+        // edamamTotalNutrition,  // Sum of all Edamam nutritional data for all ingredients
+        // averagedTotalNutrition,  // Average of Gemini's total nutrition and Edamam's total nutrition
+        finalNutritionData  // Final formatted nutritional data (Gemini + Edamam + SummedIngredients)
+      });
+    } else {
+      // User is not authenticated, return the macro breakdown without saving to the database
+      return res.json({
+        success: true,
+        finalNutritionData
+      });
+    }
   } catch (error) {
     console.error("User-friendly error message:", error.message);
     res.status(500).json({ success: false, error: error.message });
@@ -151,6 +149,46 @@ app.post('/analyze-image', upload.single('image'), async (req, res) => {
   }
 });
 
+// Get all meals for a specific user
+app.get('/meals/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
 
-export default app;
+  try {
+    const snapshot = await admin.database().ref(`users/${userId}/meals`).once('value');
+    const meals = snapshot.val();
+    const totalMeals = meals ? Object.keys(meals).length : 0;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedMeals = meals ? Object.entries(meals).slice(startIndex, endIndex).map(([key, value]) => ({ id: key, ...value })) : [];
 
+    res.json({
+      success: true,
+      meals: paginatedMeals,
+      currentPage: page,
+      totalPages: Math.ceil(totalMeals / limit),
+      totalMeals
+    });
+  } catch (error) {
+    console.error("Error retrieving meals:", error);
+    res.status(500).json({ success: false, error: 'Failed to retrieve meals' });
+  }
+});
+
+// Update a specific meal for a user
+app.put('/meals/:userId/:mealId', async (req, res) => {
+  const userId = req.params.userId;
+  const mealId = req.params.mealId;
+  const updatedMeal = req.body;
+
+  try {
+    await admin.database().ref(`users/${userId}/meals/${mealId}`).update(updatedMeal);
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error updating meal:", error);
+    res.status(500).json({ success: false, error: 'Failed to update meal' });
+  }
+});
+
+export default app; 
