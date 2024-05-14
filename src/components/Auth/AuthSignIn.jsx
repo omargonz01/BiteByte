@@ -14,21 +14,27 @@ const GoogleButton = ({ open, onClick }) => {
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
 
   const signIn = async () => {
-    await signInWithGoogle();
-    localStorage.setItem('auth', 'true');
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        localStorage.setItem('user', user.email || '');
-        localStorage.setItem('uuid', user.uid || '');
-        setMessage(`Successfully logged in as ${user.email}`);
-        setMessageType('success');
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
-      }
-    });
+    try {
+      await signInWithGoogle();
+      localStorage.setItem('auth', 'true');
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          localStorage.setItem('user', user.email || '');
+          localStorage.setItem('uuid', user.uid || '');
+          setMessage(`Successfully logged in as ${user.email}`);
+          setMessageType('success');
+          setTimeout(() => {
+            navigate('/');
+          }, 2000);
+        }
+      });
 
-    if (error) {
+      if (error) {
+        setMessage(error.message);
+        setMessageType('error');
+      }
+    } catch (error) {
+      console.error("Google Sign-in error:", error);
       setMessage(error.message);
       setMessageType('error');
     }
@@ -40,7 +46,13 @@ const GoogleButton = ({ open, onClick }) => {
 
   return (
     <Box>
-      <Button variant="contained" color="primary" size="medium" className="auth-button" onClick={signIn}>
+      <Button
+        variant="contained"
+        size="medium"
+        className="auth-button"
+        onClick={signIn}
+        style={{ backgroundColor: '#5A6D57', color: '#fff' }}
+      >
         Sign In With Google
       </Button>
       <Snackbar open={open} autoHideDuration={2000} onClose={onClick}>
@@ -72,6 +84,7 @@ const SignIn = () => {
         }
       });
     } catch (error) {
+      console.error("Sign-in error:", error);
       setMessage(error.message);
       setMessageType('error');
     }
@@ -99,15 +112,7 @@ const SignIn = () => {
           Sign In
         </Button>
         <Divider className="auth-divider">OR</Divider>
-        <Button
-          variant="contained"
-          size="medium"
-          className="auth-button"
-          onClick={SignIn}
-          style={{ backgroundColor: '#5A6D57', color: '#fff' }}
-        >
-          Sign In With Google
-        </Button>
+        <GoogleButton open={!!message} onClick={() => setMessage('')} />
         <Button variant="text" color="success" onClick={handleSignUp} className="auth-link">
           Don't have an account? Sign Up
         </Button>

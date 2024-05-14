@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../backend/config/firebaseClient';
 import './Profile.css';
 
@@ -24,6 +24,15 @@ const Profile = () => {
     navigate('/sign-up');
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/sign-in');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   return (
     <div className="profile-container">
       <div className="profile-content">
@@ -31,6 +40,7 @@ const Profile = () => {
         {isAuthenticated ? (
           <div>
             <h2 className="profile-subtitle">Welcome, {auth.currentUser.email}</h2>
+            <button className="profile-button" onClick={handleLogout}>Log Out</button>
             {/* Display user profile information and additional options */}
           </div>
         ) : (
