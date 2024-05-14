@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import uploadImageAndGetNutrition, { analyzeTextAndGetNutrition } from '../../backend/service/apiService';
+import { analyzeTextAndGetNutrition } from '../../backend/service/apiService';
 import bitebyteSpinner from '../../assets/bite1.gif';
 
 function Chat({ onTextSubmitted, onNutritionData }) {
