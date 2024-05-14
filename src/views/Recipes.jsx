@@ -103,7 +103,7 @@ const Recipes = () => {
             onClick={handleSearch}
             color="primary"
             disabled={loading}
-            sx={{ backgroundColor: 'primary.secondary', '&:hover': { backgroundColor: 'primary.light' } }}
+            sx={{ backgroundColor: 'primary.success', '&:hover': { backgroundColor: 'primary.sucess' } }}
           >
             <SearchIcon />
           </IconButton>
