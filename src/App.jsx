@@ -10,6 +10,8 @@ import NutritionResults from './views/NutritionResults';
 import Stats from './views/Stats'; 
 import Recipes from './views/Recipes'; 
 import Profile from './views/Profile'; 
+import SignIn from './components/Auth/AuthSignIn'; 
+import SignUp from './components/Auth/AuthSignUp';
 import Barcode from './views/Barcode';
 import Search from './views/Search';
 import './App.css';
@@ -119,6 +121,8 @@ function App() {
                 <Route path="/stats" element={<Stats />} />
                 <Route path="/recipes" element={<Recipes />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/sign-in" element={<SignIn />} /> 
+                <Route path="/sign-up" element={<SignUp />} /> 
                 <Route path="/barcode" element={<Barcode />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/nutrition-results" element={<NutritionResults nutritionData={nutritionData} onEditComplete={handleEditComplete} />} />
