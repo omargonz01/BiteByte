@@ -28,6 +28,22 @@ const uploadImageAndGetNutrition = async (imageFile) => {
   }
 };
 
-
+const analyzeTextAndGetNutrition = async (textDescription) => {
+  try {
+      const response = await axios.post(`${API_URL}/analyze-text`, {
+          description: textDescription
+      }, {
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      console.log(response.data);
+      return response.data;
+  } catch (error) {
+      console.error('Error analyzing text:', error);
+      throw error;
+  }
+};
 
 export default uploadImageAndGetNutrition;
+export { analyzeTextAndGetNutrition };
