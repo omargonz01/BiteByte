@@ -42,6 +42,17 @@ app.get('/', (req, res) => {
   res.send('Hello, World! This is BiteByte');
 });
 
+app.post('/analyze-text', async (req, res) => {
+  const { description } = req.body;
+  try {
+    const result = await analyzeText(description);
+    console.log("Data to be sent to client:", result);  // Log the data here
+    res.json(result);  // Send the response to the client
+  } catch (error) {
+    console.error('Failed to analyze food description:', error);
+    res.status(500).send('Server error during analysis.');
+  }
+});
 
 app.post('/analyze-image', upload.single('image'), async (req, res) => {
   if (!req.file) {
