@@ -96,20 +96,7 @@ const MacroBreakdown = ({ nutritionData }) => {
               <Meal key={index} meal={meal} />
             ))}
           </div>
-          <div className="mt-4">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+          
         </>
       )}
     </div>

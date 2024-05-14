@@ -13,7 +13,7 @@ import Profile from './views/Profile';
 import SignIn from './components/Auth/AuthSignIn'; 
 import SignUp from './components/Auth/AuthSignUp';
 import Barcode from './views/Barcode';
-import Search from './views/Search';
+import Chat from './components/Chat/Chat';
 import './App.css';
 import { auth } from './backend/config/firebaseClient';
 
@@ -187,7 +187,7 @@ function App() {
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/barcode" element={<Barcode />} />
-              <Route path="/search" element={<Search />} />
+              <Route path="/chat" element={<Chat onTextSubmitted={() => {}} onNutritionData={handleNutritionData} />} />
               <Route path="/nutrition-results" element={<NutritionResults nutritionData={nutritionData} onEditComplete={handleEditComplete} />} />
             </Routes>
               {showEditModal && (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Nav.css';
-import SearchIcon from '@mui/icons-material/Search';
+import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
@@ -10,9 +10,9 @@ import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 const AddFoodNav = ({ onClose, onSelect }) => {
   return (
     <div className="add-food-nav fixed inset-x-0 bottom-0 p-4 bg-white shadow-lg z-20">
-      <Link to="/search" className="nav-button" onClick={onClose}>
-        <SearchIcon fontSize="large" />
-        <span>Search</span>
+      <Link to="/chat" className="nav-button" onClick={onClose}>
+        <TextsmsOutlinedIcon fontSize="large" />
+        <span>Chat</span>
       </Link>
       <button onClick={() => { onSelect('upload'); onClose(); }} className="nav-button">
         <AddPhotoAlternateOutlinedIcon fontSize="large" />
