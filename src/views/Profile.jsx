@@ -1,49 +1,53 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../backend/config/firebaseClient';
+import './Profile.css';
+
 const Profile = () => {
-    return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '20vh',
-        padding: '12px',
-        backgroundColor: '#E7EFED'  
-      }}>
-        <div style={{
-          maxWidth: '768px',
-          width: '100%',
-          backgroundColor: '#FEFDF8',  
-          borderRadius: '12px',
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
-          padding: '24px'
-        }}>
-          <h1 style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            fontSize: '36px',
-            fontWeight: 'bold',
-            color: '#5A6D57',  
-            marginBottom: '1px'
-          }}>Profile</h1>
-          <h1 style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            fontSize: '18px',
-            fontWeight: 'bold',
-            color: '#5A6D57',  
-            marginBottom: '16px'
-          }}>Coming soon</h1>
-          <p style={{
-            fontSize: '16px',
-            color: '#222222'  
-          }}>
-            Manage your profile settings and personal information! 🕵🏽‍♂️
-          </p>
-        </div>
-      </div>
-    );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignIn = () => {
+    navigate('/sign-in');
   };
-  
-  export default Profile;
+
+  const handleSignUp = () => {
+    navigate('/sign-up');
+  };
+
+  return (
+    <div className="profile-container">
+      <div className="profile-content">
+        <h1 className="profile-title">Profile</h1>
+        {isAuthenticated ? (
+          <div>
+            <h2 className="profile-subtitle">Welcome, {auth.currentUser.email}</h2>
+            {/* Display user profile information and additional options */}
+          </div>
+        ) : (
+          <div>
+            <h2 className="profile-subtitle">Sign In to Access Full Features</h2>
+            <p className="profile-description">
+              Manage your profile settings and personal information! 🕵🏽‍♂️
+            </p>
+            <div className="profile-button-group">
+              <button className="profile-button" onClick={handleSignIn}>Sign In</button>
+              <button className="profile-button" onClick={handleSignUp}>Sign Up</button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Profile;
