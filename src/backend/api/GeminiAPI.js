@@ -103,16 +103,26 @@ async function analyzeText(description) {
   `;
 
   try {
+    console.log("Sending request to Google Generative AI...");
     const result = await genAI.getGenerativeModel({ model: "gemini-pro" }).generateContent(prompt);
+    console.log("Response received from Google Generative AI");
+    
     const response = await result.response;
     const rawText = await response.text();
-    // Return raw text or wrap it in a JSON object if necessary
-    return { rawText };  // Wrapping in an object to ensure it's handled as JSON
+    console.log("Raw response text:", rawText);
+
+    // Optionally clean the text, but skip JSON validation if not necessary
+    const cleanText = rawText.replace(/```json|```/g, '');
+    console.log("Cleaned response text:", cleanText);
+
+    return cleanText;  // Return the cleaned (or raw) response text directly
   } catch (error) {
-    console.error('Error retrieving data from API:', error);
-    throw new Error("API failed to process the request");
+    console.error('Error retrieving data from API:', error.message);
+    console.error("Stack trace:", error.stack);
+    throw new Error("Failed to analyze text.");
   }
 }
+
 
 
 export { analyzeImage, analyzeText };

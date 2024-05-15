@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { analyzeTextAndGetNutrition } from '../../backend/service/apiService';
 import bitebyteSpinner from '../../assets/bite1.gif';
 
-function Chat({ onTextSubmitted, onNutritionData }) {
+function Chat({ onTextSubmitted, onChatNutritionData }) {
     const [textDescription, setTextDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState([]);
@@ -10,35 +10,40 @@ function Chat({ onTextSubmitted, onNutritionData }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!textDescription.trim()) return;
-
+      
         const userMessage = { sender: 'user', text: textDescription };
         setMessages([...messages, userMessage]);
         setIsLoading(true);
-
+      
         try {
-            const nutritionData = await analyzeTextAndGetNutrition(textDescription);
-            console.log("Nutrition data received from text description:", nutritionData);
-            onNutritionData(nutritionData);
-            onTextSubmitted && onTextSubmitted(textDescription);
-
-            const aiMessage = { sender: 'ai', text: generateCoachResponse(nutritionData) };
-            setMessages([...messages, userMessage, aiMessage]);
+          const nutritionData = await analyzeTextAndGetNutrition(textDescription);
+          console.log("Nutrition data received from text description:", nutritionData);
+          onChatNutritionData(nutritionData);
+          onTextSubmitted && onTextSubmitted(textDescription);
+      
+          const aiMessage = { sender: 'ai', text: generateCoachResponse(nutritionData) };
+          setMessages([...messages, userMessage, aiMessage]);
         } catch (error) {
-            console.error('Error fetching nutrition data:', error);
+          console.error('Error fetching nutrition data:', error);
         } finally {
-            setIsLoading(false);
-            setTextDescription('');  
+          setIsLoading(false);
+          setTextDescription('');  
         }
-    };
+      };
 
-    const generateCoachResponse = (data) => {
-        if (data && data.success && data.finalNutritionData) {
-            const macros = data.finalNutritionData.macros;
-            return `Great choice! Your meal contains approximately ${macros.calories} calories, ${macros.protein}g of protein, ${macros.carbohydrates}g of carbohydrates, and ${macros.fat}g of fat. Keep it balanced!`;
+      const generateCoachResponse = (data) => {
+        if (data) {
+          const calories = data.totalCalories || 0;
+          const fats = data.macronutrients?.fats || 0;
+          const carbohydrates = data.macronutrients?.carbohydrates || 0;
+          const protein = data.macronutrients?.protein || 0;
+      
+          return `Great choice! Your meal contains approximately ${calories} calories, ${protein}g of protein, ${carbohydrates}g of carbohydrates, and ${fats}g of fat. Let me know how else I can help :)!`;
         } else {
-            return 'I couldn\'t analyze your meal. Please try again with a different description.';
+          return 'I couldn\'t analyze your meal. Please try again with a different description.';
         }
-    };
+      };
+      
 
     return (
         <div style={{

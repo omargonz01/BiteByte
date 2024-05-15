@@ -129,6 +129,35 @@ function App() {
     }
   };
 
+  // add this function to handle chat nutrition data
+  const handleChatNutritionData = (data) => {
+    console.log("Received chat nutrition data:", data);
+  
+    if (data) {
+      const formattedData = {
+        totalCalories: data.total_calories || 0,
+        macronutrients: {
+          fats: data.macronutrients?.fats?.total || 0,
+          carbohydrates: data.macronutrients?.carbohydrates?.total || 0,
+          protein: data.macronutrients?.protein || 0
+        }
+      };
+  
+      console.log("Formatted chat nutrition data:", formattedData);
+  
+      // For now, just log the data or set it to a state variable if needed
+      // setChatNutritionData(formattedData); // Optional: set this state if you need to render it somewhere
+    } else {
+      console.log("Data missing or invalid:", data);
+      setSnackbar({
+        open: true,
+        message: "No food detected or data is missing.",
+        severity: 'error',
+      });
+    }
+  };
+  
+
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
   };
@@ -187,7 +216,7 @@ function App() {
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/barcode" element={<Barcode />} />
-              <Route path="/chat" element={<Chat onTextSubmitted={() => {}} onNutritionData={handleNutritionData} />} />
+              <Route path="/chat" element={<Chat onTextSubmitted={() => {}} onChatNutritionData={handleChatNutritionData} />} />
               <Route path="/nutrition-results" element={<NutritionResults nutritionData={nutritionData} onEditComplete={handleEditComplete} />} />
             </Routes>
               {showEditModal && (

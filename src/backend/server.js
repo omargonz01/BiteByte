@@ -4,7 +4,7 @@ import cors from 'cors';
 import multer from 'multer';
 import fs from 'fs';
 import { admin } from './firebaseAdminSetup.js';
-import { analyzeImage } from './api/GeminiAPI.js';
+import { analyzeImage, analyzeText } from './api/GeminiAPI.js';
 import { getNutritionalInfoForIngredient } from './api/EdamamAPI.js';
 import { formatNutritionValues } from './service/parseNutritionalData.js';
 import { averageNutrition, sumNutrition, combineNutritionData, calculateCalories } from './service/nutritionUtils.js';
@@ -43,13 +43,19 @@ app.get('/', (req, res) => {
 
 app.post('/analyze-text', async (req, res) => {
   const { description } = req.body;
+  if (!description) {
+    return res.status(400).json({ error: 'Description is required' });
+  }
+
   try {
+    console.log("Analyzing text:", description);
     const result = await analyzeText(description);
-    console.log("Data to be sent to client:", result);  // Log the data here
-    res.json(result);  // Send the response to the client
+    console.log("Data to be sent to client:", result);
+    res.send(result);  // Send the raw (or cleaned) analysis result back to the client
   } catch (error) {
-    console.error('Failed to analyze food description:', error);
-    res.status(500).send('Server error during analysis.');
+    console.error('Failed to analyze food description:', error.message);
+    console.error('Stack trace:', error.stack);
+    res.status(500).json({ error: 'Server error during analysis.' });
   }
 });
 
